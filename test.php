@@ -1,4 +1,6 @@
 <?php
+$path = 'J:\EasyPHP-5.3.8.1\www\MPT\gdata\library';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 // ini_set('display_errors', 1); 
 //  error_reporting(E_ALL);
 
@@ -91,35 +93,22 @@ Zend_Loader::loadClass('Zend_Gdata_AuthSub');
 Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
 Zend_Loader::loadClass('Zend_Gdata_Spreadsheets');
 Zend_Loader::loadClass('Zend_Gdata_Docs');
-
+Zend_Loader::loadClass('database','classes');
 echo "<pre>";
 
-//-------------------------------------------------------------------------------
-// Google user account
-
-// $email="gdelamardiere@gmail.com";
-// $pass="Dam5ep7$";
-$username = 'gdelamardiere@gmail.com'; // Your google account username
-$password = 'Dam5ep7$'; // Your google account password
-
-//-------------------------------------------------------------------------------
-// Document key - get it from browser addres bar query key for your open spreadsheet
-
-$key = '0AmGreq0d2wLTdDQ5UmE4UUJkSW1CRW5OVHlTY3Z2V2c';
-$key = '0As2mRV6eabWQdFJ3TUlDRDFrNXZna0toLUY1dXYySUE';
 
 //---------------------------------------------------------------------------------
 // Init Zend Gdata service
 
 $service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
-$client = Zend_Gdata_ClientLogin::getHttpClient($username, $password, $service);
+$client = Zend_Gdata_ClientLogin::getHttpClient(USERNAME, PASSWORD, $service);
 $spreadSheetService = new Zend_Gdata_Spreadsheets($client);
 
 //--------------------------------------------------------------------------------
 // Example 1: Get cell data
 
 $query = new Zend_Gdata_Spreadsheets_DocumentQuery();
-$query->setSpreadsheetKey($key);
+$query->setSpreadsheetKey(KEY);
 $feed = $spreadSheetService->getWorksheetFeed($query);
 $entries = $feed->entries[0]->getContentsAsRows();
 echo "<hr><h3>Example 1: Get cell data</h3>";
@@ -131,7 +120,7 @@ $columnCount=(isset($entries[0]))?sizeof($entries[0]):0;
 // Example 2: Get column information
 
 $query = new Zend_Gdata_Spreadsheets_CellQuery();
-$query->setSpreadsheetKey($key);
+$query->setSpreadsheetKey(KEY);
 $feed = $spreadSheetService->getCellFeed($query);
 
 //$columnCount = $feed->getColumnCount()->getText();
@@ -156,7 +145,7 @@ echo var_export($columns, true);
 // foreach ($columns as $col) {
 //     $testData[$col] = "Dynamically added " . date("Y-m-d H:i:s") . " in column " . $col;
 // }
-// $ret = $spreadSheetService->insertRow($testData, $key);
+// $ret = $spreadSheetService->insertRow($testData, KEY);
 // // echo var_export($ret, true);
 
 

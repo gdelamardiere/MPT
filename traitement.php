@@ -5,7 +5,7 @@ set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 require_once 'Zend/Loader.php';
 Zend_Loader::loadClass('database',"classes");
 Zend_Loader::loadClass('personne',"classes");
-
+var_dump($_POST);
 if(empty($_POST)){
 	exit;
 }

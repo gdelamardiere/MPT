@@ -15,8 +15,8 @@ define("KEY" , '0AmGreq0d2wLTdDQ5UmE4UUJkSW1CRW5OVHlTY3Z2V2c');
 define("HOSTNAME_BASE", "localhost");
 define("DATABASE_BASE", "lmpt");
 define("USERNAME_BASE", "root");
-define("PASSWORD_BASE", "");
+define("PASSWORD_BASE", "Dam5ep7$");
 
-
+define("SITE_FRONT","localhost/MPT/");
 
 ?>

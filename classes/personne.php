@@ -1,6 +1,16 @@
 <?php
 class personne{
 	private $pdo;
+	private $aInfos;
+
+
+	private $aObligatedValue=array("nom"=>"verif_string" ,"prenom"=>"verif_string" ,
+							"tel_port"=>"verif_tel" ,"email"=>"verif_email" ,
+							"cp"=>"verif_cp" ,"date_naissance"=>"verif_date" ,
+							"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,"id_dispo"=>"verif_dispo" ,
+							"id_competence"=>"verif_competence" ,"chef_equipe"=>"verif_yn" ,
+							"nom_parain"=>"verif_string" ,"prenom_parain"=>"verif_string" ,
+							"email_parain"=>"verif_email");
 	
 	function __construct(){
 		$this->pdo=database::getInstance();
@@ -8,100 +18,164 @@ class personne{
 
 
 
+	public function insert_personne($aValue){
+		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`personnes` (
+								`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
+								`cp` ,`date_naissance` ,`sexe` ,`id_action` ,`id_dispo` ,
+								`id_competence` ,`chef_equipe` ,`RQ` ,`id_parain` ,
+								`nom_parain` ,`prenom_parain` ,`email_parain` ,`id_statut` ,
+								`date_form` ,`date_activation` ,`cle_activation`
+								)
+								VALUES (
+								NULL ,  :nom,  :prenom,  :tel_port, 
+								:email,  :cp,  :date,  :sexe, 
+								:id_action,  :id_dispo,  :id_competence,  :chef_equipe, 
+								:req,  :id_parain,  :nom_parain, 
+								:prenom_parain,  :email_parain,  
+								:id_statut,  :date_form,  null,  
+								:cle)"
+			);
+		$stmt->execute($aValue);
+	}
+
+	public function verif_string($value){
+		$regex="#^$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_tel($value){
+		$regex="#^0[1-9][0-9]{8}$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_cp($value){
+		$regex="#^[0-9]{2,5}$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_date($value){
+		$regex="#^[0-9]{4}/[0-9]{2}/[0-9]{2}$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_sexe($value){
+		$regex="#^[h,f]$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_action($id){
+		$aVal=$this->getCompetences();
+		return in_array($id,$aVal);
+	}
+
+	public function verif_dispo($id){
+		$aVal=$this->getDisponibilites();
+		return in_array($id,$aVal);
+	}
+	public function verif_competence($id){
+		$aVal=$this->getCompetences();
+		return in_array($id,$aVal);
+	}
+
+	public function verif_yn($value){
+		$regex="#^[0-1]$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_regex($regex,$value){
+		return preg_match($regex,$value);
+	}
 
 
-
-
-
-
-	public function display_film_genre($id_genre){
-			if($id_genre!="0"){
-				$stmt = $this->pdo->prepare("SELECT f.titre,f.id_film FROM film as f,genre_film as g, genre as i where f.id_film=g.id_film AND i.id_genre=g.id_genre AND g.id_genre=:id_genre order by f.titre");
-				$stmt->execute(array('id_genre' => $id_genre));
+	public function verif_value($aPost){
+		$return=true;
+		$aListeVide=array();
+		$aListeNonCorrect=array();
+		$parain=verif_parrain($aPost);
+		foreach($this->aObligatedValue as $key=>$fnct){
+			if(empty($aPost[$key])){
+				$aListeVide[]=$key;
 			}
-			else{
-				$query_Recordset1 = "";
-				$stmt = $this->pdo->prepare("SELECT f.titre,f.id_film FROM film as f order by f.titre");
-				$stmt->execute();
-			} 				
-			$i=0;
-			while($val = $stmt->fetch(PDO::FETCH_ASSOC)){					
-				echo ' <option value="'.$val['id_film'].'" ';
-		  		if($i==0){echo 'selected="selected"';}
-				echo '>'.str_replace(":","",utf8_encode($val['titre'])).'</option> ';					
-				$i++;					
-			}						 
-		 }
-
-		 function ajout_genres_film($infos,$id_film){
-			$tab=$this->lister_genre();
-			foreach($infos as $genres){
-					$id_genre=(isset($tab[$genres['$']]))?$tab[$genres['$']]:$this->creer_genre($genres['$']);
-					$this->inserer_genre_film($id_genre,$id_film);
-				}
-		}
-
-
-
-	 function inserer_genre_film($id_genre,$id_film){
-			$stmt = $this->pdo->prepare("INSERT INTO genre_film (id_genre,id_film) VALUES(:id_genre,:id_film)");
-			$stmt->execute(array("id_genre"=>$id_genre,"id_film"=>$id_film));
-		}
-
-
-	private function creer_genre($name){
-			$stmt = $this->pdo->prepare("INSERT INTO genre (nom) VALUES(:name)");
-			$stmt->execute(array("name"=>$name));
-			return PDO::lastInsertId(); 
-		 }
-
-		  public function lister_genre(){
-			$stmt = $this->pdo->prepare("SELECT nom,id_genre FROM genre");
-			$stmt->execute() ;
-			$tab= array();
-			while($row_Recordset2 = $stmt->fetch(PDO::FETCH_ASSOC)){
-				$tab[$row_Recordset2['nom']]=$row_Recordset2['id_genre'];
+			else if(!$this->$fnct($aPost[$key])){
+				$aListeNonCorrect[]=$key;
 			}
-			return $tab;			 
-		 }
+		}
+		if(!empty($aListeVide) || !empty($aListeNonCorrect || !$parain)){
+			$return=array("vide"=>$aListeVide,"nCorrect"=>$aListeNonCorrect,"parain"=>$parain);
+		}
+		return $return;
+	}
 
-		 public function list_genre_film(){
-		 	$stmt = $this->pdo->prepare("SELECT nom,g.id_genre, count(id_film) as c FROM `genre_film` as l,genre as g WHERE l.id_genre=g.id_genre group by g.id_genre order by c desc, g.id_genre");
-			$stmt->execute() ;
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-		 }
+	public function verif_parain($aPost){
+		$return=true;
+	}
 
-		 public function genre_film($id_film){
-		 	$stmt = $this->pdo->prepare("SELECT nom,g.id_genre FROM genre as g,genre_film where g.id_genre = genre_film.id_genre AND genre_film.id_film=:id_film");
-			$stmt->execute(array("id_film"=>$id_film)) ;
-			return $stmt->fetchAll(PDO::FETCH_ASSOC);
-		 }
+	public function prepare_value($aPost){
+		$aValue=$aPost;
+		$aValue['date_form']=date("Y-m-d H:i:s"); 
+		$aValue['cle_activation']=md5(time());
+		$aValue['id_statut']=$this->getIdStatut("WAIT_ACTIVATION");
+		$aValue['RQ']=(!empty($aPost['RQ']))?$aPost['RQ']:"";
+		$this->aInfos=$aValue;
+		return $aValue;
+	}
 
+	public function getCompetences(){
+		$stmt = $this->pdo->prepare("SELECT id_competences,	competence FROM `competences`  WHERE actif='1'");
+		$stmt->execute() ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
+	public function getIdCompetences($value){
+		$stmt = $this->pdo->prepare("SELECT id_competences, FROM `competences`  WHERE actif='1' AND competence=:value");
+		$stmt->execute(array("competence"=>$value)) ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
-/**todo*/
-		 public function deplacer_all_film_repertoire_genre(){ 		 	
-		 	$this->base = mysql_connect($this->hostname_base, $this->username_base,$this->password_base) or trigger_error(mysql_error(),E_USER_ERROR);
-		 	mysql_select_db($this->database_base, $this->base);
-		 	$query_Genre = "SELECT *  from genre order by ordre, nom";
-			$Record = mysql_query($query_Genre) or die(mysql_error());
-			while($row_Genre = mysql_fetch_assoc($Record)){
-				$query_Recordset1 = "SELECT l.id_liens,l.lien from liens l, genre_film gf where l.id_film=gf.id_film	AND gf.id_genre = ".$row_Genre['id_genre']." AND l.classe='0'";
-				$Recordset1 = mysql_query($query_Recordset1) or die(mysql_error());
-				while($row_Recordset1 = mysql_fetch_assoc($Recordset1)){
-					$racine_dossier_old=dirname($row_Recordset1['lien']);
-					$racine_dossier="/Volumes/DDE_FILM/film/".$row_Genre['rep_dest'];
-					$file=$racine_dossier."/".basename($row_Recordset1['lien']);
-					var_dump($racine_dossier,$file,$row_Recordset1['lien']);echo "<br>";
-					if($racine_dossier_old!=$racine_dossier){		
-						$this->rename_fichier($racine_dossier,$file,$row_Recordset1['lien']);						
-					}
-					$query="update liens set lien='".$file."',classe='1' WHERE id_liens =".$row_Recordset1['id_liens'];					
-					$Recordset = mysql_query($query, $this->base) or die(mysql_error());
-			
-				}
-		 	}
-		 }
+	public function getDisponibilites(){
+		$stmt = $this->pdo->prepare("SELECT id_dispo,dispo FROM `disponibilites`  WHERE actif='1'");
+		$stmt->execute() ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getIdDisponibilites($value){
+		$stmt = $this->pdo->prepare("SELECT id_dispo, FROM `disponibilites`  WHERE actif='1' AND dispo=:value");
+		$stmt->execute(array("dispo"=>$value)) ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getActions(){
+		$stmt = $this->pdo->prepare("SELECT id_action,	action FROM `actions`  WHERE actif='1'");
+		$stmt->execute() ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getIdAction($value){
+		$stmt = $this->pdo->prepare("SELECT id_action,	action FROM `actions`  WHERE actif='1' AND action=:value");
+		$stmt->execute(array("action"=>$value)) ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getStatuts(){
+		$stmt = $this->pdo->prepare("SELECT id_statut,	statut FROM `statuts`  WHERE actif='1'");
+		$stmt->execute() ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getIdStatut($value){
+		$stmt = $this->pdo->prepare("SELECT id_statut,	statut FROM `statuts`  WHERE actif='1' AND statut=:value");
+		$stmt->execute(array("statut"=>$value)) ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function send_mail_activation(){
+		$lien=SITE_FRONT."activate.php?key=".$this->aInfos['cle_activation'];
+		echo $lien;
+	}
+
+	public function activate($cle_activation){
+
+	}
 
 
 }

@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+body{
+	background-color:#E8EEF7;
+	color:black;
+	font:normal 13px arial,sans-serif;
+	margin:0;
+    padding: 0;
+}
+
+.form{
+	border: 1px solid #CCCCCC;
+    width: 45em;
+    background-color: #FFFFFF;
+    margin: 0.5em auto 0;
+    padding: 1em;
+}
+
+h1{
+	font-size: 1.8em;
+    padding: 0;
+}
+h2{
+	background-color: #EEEEEE;
+    margin: 2em -0.4em 0;
+    padding: 0.4em;
+}
+
+label{
+	width:90px;
+	display:inline-block;
+	margin-right: 20px;
+    vertical-align: top;
+    text-align: left;
+    font-weight: bold;
+}
+.label{
+	width:400px;
+	display:block;
+	margin-bottom: 0px;
+}
+.label-checkbox{
+	width:400px;
+	font-weight: normal;
+}
+.label-radio{
+	font-weight: normal;
+}
+
+ul{
+	list-style: none outside none;
+    margin: 0.5em 0 0;
+    padding: 0;
+}
+
+li{
+	line-height: 1.3em;
+    margin: 0;
+   /* padding-bottom: 0.5em;*/
+}
+
+.erreur{
+	color:red;
+}

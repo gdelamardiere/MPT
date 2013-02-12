@@ -1,16 +1,16 @@
 <?php
 class personne{
 	private $pdo;
-	private $aInfos;
+	public $aInfos;
 
 
 	private $aObligatedValue=array("nom"=>"verif_string" ,"prenom"=>"verif_string" ,
-							"tel_port"=>"verif_tel" ,"email"=>"verif_email" ,
-							"cp"=>"verif_cp" ,"date_naissance"=>"verif_date" ,
-							"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,"id_dispo"=>"verif_dispo" ,
-							"id_competence"=>"verif_competence" ,"chef_equipe"=>"verif_yn" ,
-							"nom_parain"=>"verif_string" ,"prenom_parain"=>"verif_string" ,
-							"email_parain"=>"verif_email");
+		"tel_port"=>"verif_tel" ,"email"=>"verif_email" ,
+		"cp"=>"verif_cp" ,"date_naissance"=>"verif_date" ,
+		"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,"id_dispo"=>"verif_dispo" ,
+		"id_competence"=>"verif_competence" ,"chef_equipe"=>"verif_yn" ,
+		"nom_parain"=>"verif_string" ,"prenom_parain"=>"verif_string" ,
+		"email_parain"=>"verif_email");
 	
 	function __construct(){
 		$this->pdo=database::getInstance();
@@ -20,31 +20,36 @@ class personne{
 
 	public function insert_personne($aValue){
 		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`personnes` (
-								`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
-								`cp` ,`date_naissance` ,`sexe` ,`id_action` ,`id_dispo` ,
-								`id_competence` ,`chef_equipe` ,`RQ` ,`id_parain` ,
-								`nom_parain` ,`prenom_parain` ,`email_parain` ,`id_statut` ,
-								`date_form` ,`date_activation` ,`cle_activation`
-								)
-								VALUES (
-								NULL ,  :nom,  :prenom,  :tel_port, 
-								:email,  :cp,  :date,  :sexe, 
-								:id_action,  :id_dispo,  :id_competence,  :chef_equipe, 
-								:req,  :id_parain,  :nom_parain, 
-								:prenom_parain,  :email_parain,  
-								:id_statut,  :date_form,  null,  
-								:cle)"
-			);
+			`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
+			`cp` ,`date_naissance` ,`sexe` ,`id_action` ,`id_dispo` ,
+			`id_competence` ,`chef_equipe` ,`RQ` ,`id_parain` ,
+			`nom_parain` ,`prenom_parain` ,`email_parain` ,`id_statut` ,
+			`date_form` ,`date_activation` ,`cle_activation`
+			)
+		VALUES (
+			NULL ,  :nom,  :prenom,  :tel_port, 
+			:email,  :cp,  :date,  :sexe, 
+			:id_action,  :id_dispo,  :id_competence,  :chef_equipe, 
+			:req,  :id_parain,  :nom_parain, 
+			:prenom_parain,  :email_parain,  
+			:id_statut,  :date_form,  null,  
+			:cle)"
+		);
 		$stmt->execute($aValue);
 	}
 
 	public function verif_string($value){
-		$regex="#^$#";
+		$regex="#^[^<>]+$#";
 		return $this->verif_regex($regex,$value);
 	}
 
 	public function verif_tel($value){
 		$regex="#^0[1-9][0-9]{8}$#";
+		return $this->verif_regex($regex,$value);
+	}
+
+	public function verif_email($value){
+		$regex="#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#";
 		return $this->verif_regex($regex,$value);
 	}
 
@@ -59,7 +64,7 @@ class personne{
 	}
 
 	public function verif_sexe($value){
-		$regex="#^[h,f]$#";
+		$regex="#^[Homme,Femme]$#";
 		return $this->verif_regex($regex,$value);
 	}
 
@@ -78,7 +83,7 @@ class personne{
 	}
 
 	public function verif_yn($value){
-		$regex="#^[0-1]$#";
+		$regex="#^[Oui-Non]$#";
 		return $this->verif_regex($regex,$value);
 	}
 
@@ -86,12 +91,17 @@ class personne{
 		return preg_match($regex,$value);
 	}
 
+	public function verif_parrain($aPost){
+		$stmt = $this->pdo->prepare("SELECT count (id_personne), FROM `personnes`  WHERE nom_parain LIKE :nom_parrain AND prenom_parain LIKE :prenom_parrain AND email_parain LIKE :email_parrain");
+		$stmt->execute(array("nom_parrain"=>$aPost['nom_parrain'],"prenom_parrain"=>$aPost['prenom_parrain'],"email_parrain"=>$aPost['email_parrain'])) ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
 
 	public function verif_value($aPost){
 		$return=true;
 		$aListeVide=array();
 		$aListeNonCorrect=array();
-		$parain=verif_parrain($aPost);
 		foreach($this->aObligatedValue as $key=>$fnct){
 			if(empty($aPost[$key])){
 				$aListeVide[]=$key;
@@ -100,8 +110,14 @@ class personne{
 				$aListeNonCorrect[]=$key;
 			}
 		}
-		if(!empty($aListeVide) || !empty($aListeNonCorrect || !$parain)){
-			$return=array("vide"=>$aListeVide,"nCorrect"=>$aListeNonCorrect,"parain"=>$parain);
+		if(!empty($aListeVide) || !empty($aListeNonCorrect)){
+			$return=array("vide"=>$aListeVide,"nCorrect"=>$aListeNonCorrect);
+		}
+		else {
+			$parain=$this->verif_parrain($aPost);
+			if(!$parrain){				
+				$return["parrain"]=$parrain;
+			}
 		}
 		return $return;
 	}
@@ -171,10 +187,84 @@ class personne{
 	public function send_mail_activation(){
 		$lien=SITE_FRONT."activate.php?key=".$this->aInfos['cle_activation'];
 		echo $lien;
+		$mail=$lien.": \n";
+		$this->send_mail(utf8_decode($mail), $this->aInfos['email'], "activation aide pour La Manif Pour Tous", "gdelamardiere@test.com", "gdelamardiere@test.com");
 	}
 
 	public function activate($cle_activation){
 
+	}
+
+	public function listChampPersonne(){
+		$sql="SELECT COLUMN_NAME
+		FROM INFORMATION_SCHEMA.COLUMNS
+		WHERE TABLE_NAME='personnes'";
+
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute() ;
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function send_mail($txt, $to, $subject, $from, $from_addr, $cc = null, $bcc = null, $rel_path = null) {
+		$srvr = $this->get_path(false, $rel_path);
+		$mime_type = (strpos($txt, '<html>') === false) ? "text/plain" : "text/html";
+
+		$txt = preg_replace(
+			array("/\"img\//",
+				"/href=\"(?!(http|mailto))/",
+				"/url\(/"
+					),
+			array("\"" . $srvr . "img/",
+				"href=\"" . $srvr,
+				"url(" . $srvr
+					),
+			$txt
+			);
+
+		$from_hdr = strpos($_SERVER["SERVER_SOFTWARE"], "IIS") ? $from_addr : $this->filter_chars($from) . " <" . $from_addr . ">";
+		$headers = "MIME-Version: 1.0\n"
+		. "Content-type: " . $mime_type . "; charset: iso-8859-1\n"
+		. "Content-Transfer-Encoding: 8bit\n"
+		. "From: " . $from_hdr . "\n"
+		. "Reply-To: " . $from_addr . "\n"
+		. "Return-Path: " . $from_addr . "\n"
+		. "X-Mailer: PHP/" . phpversion() . "\n";
+
+		if ($cc)
+			$headers .= "Cc: " . $cc . "\n";
+		if ($bcc == null && defined("BCC_EMAILS_TO"))
+			$bcc = BCC_EMAILS_TO;
+		if ($bcc)
+			$headers .= "Bcc: " . $bcc . "\n";
+
+		return mail($to, filter_chars($subject), $txt, $headers . "\n", "-f" . $from_addr);
+	}
+
+// filter_chars
+	public function filter_chars($str) {
+		return strtr($str,
+			"\xe1\xc1\xe0\xc0\xe2\xc2\xe4\xc4\xe3\xc3\xe5\xc5" .
+			"\xaa\xe7\xc7\xe9\xc9\xe8\xc8\xea\xca\xeb\xcb\xed" .
+			"\xcd\xec\xcc\xee\xce\xef\xcf\xf1\xd1\xf3\xd3\xf2" .
+			"\xd2\xf4\xd4\xf6\xd6\xf5\xd5\x8\xd8\xba\xf0\xfa\xda" .
+			"\xf9\xd9\xfb\xdb\xfc\xdc\xfd\xdd\xff\xe6\xc6\xdf\xf8",
+			"aAaAaAaAaAaAacCeEeEeEeEiIiIiIiInNoOoOoOoOoOoOoouUuUuUuUyYyaAso"
+			);
+	}
+
+// get_path
+	public function get_path($use_https = false, $rel_path = null) {
+		$url = dirname($_SERVER["SCRIPT_NAME"]);
+		if ($rel_path){
+			$url .= '/' . $rel_path;
+		}			
+		if ($url == "\\"){ // patch pour PHP:IIS
+			$url = "/";
+		}
+		else if ($url != "/"){
+			$url .= "/";
+		}			
+		return ($use_https ? "https" : "http") . "://" . $_SERVER["SERVER_NAME"] . $url;
 	}
 
 

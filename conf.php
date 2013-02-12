@@ -1,4 +1,6 @@
 <?php
+$path = 'J:\EasyPHP-5.3.8.1\www\MPT\gdata\library';
+set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 //-------------------------------------------------------------------------------
 // compte gmail:
 define("USERNAME" , 'gdelamardiere@gmail.com'); // Your google account username
@@ -15,7 +17,7 @@ define("KEY" , '0AmGreq0d2wLTdDQ5UmE4UUJkSW1CRW5OVHlTY3Z2V2c');
 define("HOSTNAME_BASE", "localhost");
 define("DATABASE_BASE", "lmpt");
 define("USERNAME_BASE", "root");
-define("PASSWORD_BASE", "Dam5ep7$");
+define("PASSWORD_BASE", "");
 
 define("SITE_FRONT","localhost/MPT/");
 

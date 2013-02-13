@@ -18,7 +18,8 @@ if(!empty($_POST)){
 	$aPost=array_map("trim",$_POST);
 	$verif=$personne->verif_value($aPost);
 	if($verif===true){
-		$personne->insert_personne($aPost);
+		$aValue=$personne->prepare_value($aPost);
+		$personne->insert_personne($aValue);
 		$personne->send_mail_activation();
 	}
 	else{
@@ -168,10 +169,7 @@ if(!empty($_POST)){
 				<div class="checkbox">
 					<label class="label">Je suis motivé pour :</label>
 					<ul>
-						<?php foreach($actions as $array){
-							$key=$array['id_action'];
-							$value=$array['action'];
-							?>
+						<?php foreach($actions as $key=>$value){?>
 							<li>
 								<input type="checkbox" name="id_action" value="<?php echo $key;?>" id="id_action_<?php echo $key;?>" class="required-checbox" <?php if($id_action==$key){echo 'checked="checked"';}?>>
 								<label class="label-checkbox" for="id_action_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
@@ -187,10 +185,7 @@ if(!empty($_POST)){
 					<div class="checkbox">
 						<label class="label">Je suis disponible :</label>
 						<ul>
-							<?php foreach($dispo as $array){
-								$key=$array['id_dispo'];
-								$value=$array['dispo'];
-								?>
+							<?php foreach($dispo as $key=>$value){?>
 								<li>
 									<input type="checkbox" name="id_dispo" value="<?php echo $key;?>" id="id_dispo_<?php echo $key;?>" class="required-checbox"  <?php if($id_dispo==$key){echo 'checked="checked"';}?>>
 									<label class="label-checkbox" for="id_dispo_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
@@ -224,10 +219,7 @@ if(!empty($_POST)){
 						<div class="checkbox">
 							<label class="label">J&#39;ai les compétences suivantes :</label>
 							<ul>
-								<?php foreach($competences as $array){
-									$key=$array['id_competences'];
-									$value=$array['competence'];
-									?>
+								<?php foreach($competences as $key=>$value){?>
 									<li>
 										<input type="checkbox" name="id_competences" value="<?php echo $key;?>" id="id_competences_<?php echo $key;?>" class="required-checbox"  <?php if($id_competences==$key){echo 'checked="checked"';}?>>
 										<label class="label-checkbox" for="id_competences_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>

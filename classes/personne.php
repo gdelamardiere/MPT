@@ -8,9 +8,9 @@ class personne{
 		"tel_port"=>"verif_tel" ,"email"=>"verif_email" ,
 		"cp"=>"verif_cp" ,"date_naissance"=>"verif_date" ,
 		"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,"id_dispo"=>"verif_dispo" ,
-		"id_competence"=>"verif_competence" ,"chef_equipe"=>"verif_yn" ,
-		"nom_parain"=>"verif_string" ,"prenom_parain"=>"verif_string" ,
-		"email_parain"=>"verif_email");
+		"id_competences"=>"verif_competence" ,"chef_equipe"=>"verif_yn" ,
+		"nom_parrain"=>"verif_string" ,"prenom_parrain"=>"verif_string" ,
+		"email_parrain"=>"verif_email");
 	
 	function __construct(){
 		$this->pdo=database::getInstance();
@@ -22,18 +22,18 @@ class personne{
 		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`personnes` (
 			`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
 			`cp` ,`date_naissance` ,`sexe` ,`id_action` ,`id_dispo` ,
-			`id_competence` ,`chef_equipe` ,`RQ` ,`id_parain` ,
-			`nom_parain` ,`prenom_parain` ,`email_parain` ,`id_statut` ,
+			`id_competences` ,`chef_equipe` ,`RQ` ,`id_parrain` ,
+			`nom_parrain` ,`prenom_parrain` ,`email_parrain` ,`id_statut` ,
 			`date_form` ,`date_activation` ,`cle_activation`
 			)
 		VALUES (
 			NULL ,  :nom,  :prenom,  :tel_port, 
-			:email,  :cp,  :date,  :sexe, 
-			:id_action,  :id_dispo,  :id_competence,  :chef_equipe, 
-			:req,  :id_parain,  :nom_parain, 
-			:prenom_parain,  :email_parain,  
+			:email,  :cp,  :date_naissance,  :sexe, 
+			:id_action,  :id_dispo,  :id_competences,  :chef_equipe, 
+			:RQ,  :id_parrain,  :nom_parrain, 
+			:prenom_parrain,  :email_parrain,  
 			:id_statut,  :date_form,  null,  
-			:cle)"
+			:cle_activation)"
 		);
 		$stmt->execute($aValue);
 	}
@@ -64,26 +64,26 @@ class personne{
 	}
 
 	public function verif_sexe($value){
-		$regex="#^[Homme,Femme]$#";
+		$regex="#^(Homme|Femme)$#";
 		return $this->verif_regex($regex,$value);
 	}
 
 	public function verif_action($id){
-		$aVal=$this->getCompetences();
-		return in_array($id,$aVal);
+		$aVal=$this->getActions();
+		return array_key_exists($id,$aVal);
 	}
 
 	public function verif_dispo($id){
 		$aVal=$this->getDisponibilites();
-		return in_array($id,$aVal);
+		return array_key_exists($id,$aVal);
 	}
 	public function verif_competence($id){
 		$aVal=$this->getCompetences();
-		return in_array($id,$aVal);
+		return array_key_exists($id,$aVal);
 	}
 
 	public function verif_yn($value){
-		$regex="#^[Oui-Non]$#";
+		$regex="#^(1|0)$#";
 		return $this->verif_regex($regex,$value);
 	}
 
@@ -91,10 +91,11 @@ class personne{
 		return preg_match($regex,$value);
 	}
 
-	public function verif_parrain($aPost){
-		$stmt = $this->pdo->prepare("SELECT count (id_personne), FROM `personnes`  WHERE nom_parain LIKE :nom_parrain AND prenom_parain LIKE :prenom_parrain AND email_parain LIKE :email_parrain");
-		$stmt->execute(array("nom_parrain"=>$aPost['nom_parrain'],"prenom_parrain"=>$aPost['prenom_parrain'],"email_parrain"=>$aPost['email_parrain'])) ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	public function getIdParrain(){
+		$stmt = $this->pdo->prepare("SELECT id_personne FROM `personnes`  WHERE nom LIKE :nom_parrain AND prenom LIKE :prenom_parrain AND email LIKE :email_parrain");
+		$stmt->execute(array("nom_parrain"=>$this->aInfos['nom_parrain'],"prenom_parrain"=>$this->aInfos['prenom_parrain'],"email_parrain"=>$this->aInfos['email_parrain'])) ;
+		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
+		return ($ret===false)?NULL:$ret['id_competences'];
 	}
 
 
@@ -103,7 +104,7 @@ class personne{
 		$aListeVide=array();
 		$aListeNonCorrect=array();
 		foreach($this->aObligatedValue as $key=>$fnct){
-			if(empty($aPost[$key])){
+			if(!isset($aPost[$key])){echo $key;
 				$aListeVide[]=$key;
 			}
 			else if(!$this->$fnct($aPost[$key])){
@@ -112,25 +113,25 @@ class personne{
 		}
 		if(!empty($aListeVide) || !empty($aListeNonCorrect)){
 			$return=array("vide"=>$aListeVide,"nCorrect"=>$aListeNonCorrect);
-		}
+		}/*
 		else {
-			$parain=$this->verif_parrain($aPost);
+			$parrain=$this->verif_parrain($aPost);
 			if(!$parrain){				
 				$return["parrain"]=$parrain;
 			}
-		}
+		}*/
 		return $return;
 	}
 
-	public function verif_parain($aPost){
-		$return=true;
-	}
+	
 
 	public function prepare_value($aPost){
-		$aValue=$aPost;
+		$aValue=$aPost;		
+		unset($aValue['submit_inscription']);
 		$aValue['date_form']=date("Y-m-d H:i:s"); 
 		$aValue['cle_activation']=md5(time());
 		$aValue['id_statut']=$this->getIdStatut("WAIT_ACTIVATION");
+		$aValue['id_parrain']=$this->getIdParrain();
 		$aValue['RQ']=(!empty($aPost['RQ']))?$aPost['RQ']:"";
 		$this->aInfos=$aValue;
 		return $aValue;
@@ -139,37 +140,52 @@ class personne{
 	public function getCompetences(){
 		$stmt = $this->pdo->prepare("SELECT id_competences,	competence FROM `competences`  WHERE actif='1'");
 		$stmt->execute() ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=array();
+		while($competence=$stmt->fetch(PDO::FETCH_ASSOC)){
+			$ret[$competence['id_competences']]=$competence['competence'];
+		}
+		return $ret;
 	}
 
 	public function getIdCompetences($value){
 		$stmt = $this->pdo->prepare("SELECT id_competences, FROM `competences`  WHERE actif='1' AND competence=:value");
 		$stmt->execute(array("competence"=>$value)) ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
+		return $ret['id_competences'];
 	}
 
 	public function getDisponibilites(){
 		$stmt = $this->pdo->prepare("SELECT id_dispo,dispo FROM `disponibilites`  WHERE actif='1'");
 		$stmt->execute() ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=array();
+		while($competence=$stmt->fetch(PDO::FETCH_ASSOC)){
+			$ret[$competence['id_dispo']]=$competence['dispo'];
+		}
+		return $ret;
 	}
 
 	public function getIdDisponibilites($value){
 		$stmt = $this->pdo->prepare("SELECT id_dispo, FROM `disponibilites`  WHERE actif='1' AND dispo=:value");
 		$stmt->execute(array("dispo"=>$value)) ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
+		return $ret['id_dispo'];
 	}
 
 	public function getActions(){
 		$stmt = $this->pdo->prepare("SELECT id_action,	action FROM `actions`  WHERE actif='1'");
 		$stmt->execute() ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=array();
+		while($competence=$stmt->fetch(PDO::FETCH_ASSOC)){
+			$ret[$competence['id_action']]=$competence['action'];
+		}
+		return $ret;
 	}
 
 	public function getIdAction($value){
 		$stmt = $this->pdo->prepare("SELECT id_action,	action FROM `actions`  WHERE actif='1' AND action=:value");
 		$stmt->execute(array("action"=>$value)) ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
+		return $ret['id_action'];
 	}
 
 	public function getStatuts(){
@@ -179,9 +195,10 @@ class personne{
 	}
 
 	public function getIdStatut($value){
-		$stmt = $this->pdo->prepare("SELECT id_statut,	statut FROM `statuts`  WHERE actif='1' AND statut=:value");
+		$stmt = $this->pdo->prepare("SELECT id_statut,	statut FROM `statuts`  WHERE actif='1' AND statut=:statut");
 		$stmt->execute(array("statut"=>$value)) ;
-		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
+		return $ret['id_statut'];
 	}
 
 	public function send_mail_activation(){
@@ -192,7 +209,15 @@ class personne{
 	}
 
 	public function activate($cle_activation){
-
+		$ret=false;
+		$stmt = $this->pdo->prepare("UPDATE `personnes`  SET date_activation=:date_activation,id_statut=:id_statut WHERE cle_activation=:cle_activation");
+		$stmt->execute(array("date_activation"=>date("Y-m-d H:i:s"),"id_statut"=>$this->getIdStatut("WAIT_VALIDATION"),"cle_activation"=>$cle_activation)) ;
+		if($stmt->rowCount()==1){
+			$ret=true;
+			$test= new spreedsheet();
+			$test->add_personne();
+		}
+		return $ret;
 	}
 
 	public function listChampPersonne(){
@@ -237,7 +262,7 @@ class personne{
 		if ($bcc)
 			$headers .= "Bcc: " . $bcc . "\n";
 
-		return mail($to, filter_chars($subject), $txt, $headers . "\n", "-f" . $from_addr);
+		return mail($to, $this->filter_chars($subject), $txt, $headers . "\n", "-f" . $from_addr);
 	}
 
 // filter_chars

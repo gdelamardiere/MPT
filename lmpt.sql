@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `personnes` (
   PRIMARY KEY (`id_personne`),
   KEY `id_dispo` (`id_dispo`),
   KEY `id_competence` (`id_competences`),
-  KEY `id_parain` (`id_parrain`),
+  KEY `id_parrain` (`id_parrain`),
   KEY `id_statut` (`id_statut`),
   KEY `id_action` (`id_action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

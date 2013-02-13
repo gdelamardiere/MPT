@@ -1,6 +1,5 @@
 <?php
-$path = 'J:\EasyPHP-5.3.8.1\www\MPT\gdata\library';
-set_include_path(get_include_path() . PATH_SEPARATOR . $path);
+require_once('conf.php'); 
 // ini_set('display_errors', 1); 
 //  error_reporting(E_ALL);
 

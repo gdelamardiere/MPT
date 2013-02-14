@@ -1,0 +1,15 @@
+0:configurer apache, php et mysql + (penser à configurer son mail)
+1: creer la base de donnée a partir du fichier dump_base_lmpt.sql
+2: dans le fichier conf.php définir la clé du google doc que l'on veut lire + login + password
+3: appeller le formulaire inscription.php
+4: réception d'un email à l'adresse indiqué dans l'inscription
+
+
+
+
+Etat actuel: 
+mise en place du formulaire
+creation d'une classe pour ajout dans google doc
+envoi mail d'activation
+
+ces 3 étapes ne sont pas totalement terminés

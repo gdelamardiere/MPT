@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le : Mar 12 Février 2013 à 18:06
+-- Généré le : Jeu 14 Février 2013 à 13:25
 -- Version du serveur: 5.5.16
 -- Version de PHP: 5.3.8
 
@@ -19,6 +19,9 @@ SET time_zone = "+00:00";
 --
 -- Base de données: `lmpt`
 --
+DROP DATABASE `lmpt`;
+CREATE DATABASE `lmpt` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `lmpt`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +29,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `actions`
 --
 
+DROP TABLE IF EXISTS `actions`;
 CREATE TABLE IF NOT EXISTS `actions` (
   `id_action` int(11) NOT NULL AUTO_INCREMENT,
   `action` varchar(100) NOT NULL,
@@ -48,6 +52,7 @@ INSERT INTO `actions` (`id_action`, `action`, `actif`) VALUES
 -- Structure de la table `competences`
 --
 
+DROP TABLE IF EXISTS `competences`;
 CREATE TABLE IF NOT EXISTS `competences` (
   `id_competences` int(11) NOT NULL AUTO_INCREMENT,
   `competence` varchar(50) NOT NULL,
@@ -74,6 +79,7 @@ INSERT INTO `competences` (`id_competences`, `competence`, `actif`) VALUES
 -- Structure de la table `disponibilites`
 --
 
+DROP TABLE IF EXISTS `disponibilites`;
 CREATE TABLE IF NOT EXISTS `disponibilites` (
   `id_dispo` int(11) NOT NULL AUTO_INCREMENT,
   `dispo` varchar(50) NOT NULL,
@@ -97,6 +103,7 @@ INSERT INTO `disponibilites` (`id_dispo`, `dispo`, `actif`) VALUES
 -- Structure de la table `historiques`
 --
 
+DROP TABLE IF EXISTS `historiques`;
 CREATE TABLE IF NOT EXISTS `historiques` (
   `id_histo` int(11) NOT NULL AUTO_INCREMENT,
   `id_personne` int(11) NOT NULL,
@@ -114,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `historiques` (
 -- Structure de la table `personnes`
 --
 
+DROP TABLE IF EXISTS `personnes`;
 CREATE TABLE IF NOT EXISTS `personnes` (
   `id_personne` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
@@ -122,27 +130,36 @@ CREATE TABLE IF NOT EXISTS `personnes` (
   `email` varchar(50) NOT NULL,
   `cp` varchar(5) NOT NULL,
   `date_naissance` date NOT NULL,
-  `sexe` enum('H','F') NOT NULL,
+  `sexe` enum('Homme','Femme') NOT NULL,
   `id_action` int(11) NOT NULL,
   `id_dispo` int(11) NOT NULL,
   `id_competences` int(11) NOT NULL,
   `chef_equipe` enum('0','1') NOT NULL,
   `RQ` text NOT NULL,
-  `id_parrain` int(11) NOT NULL,
+  `id_parrain` int(11) DEFAULT NULL,
   `nom_parrain` varchar(50) NOT NULL,
   `prenom_parrain` varchar(30) NOT NULL,
   `email_parrain` varchar(50) NOT NULL,
   `id_statut` int(11) NOT NULL,
   `date_form` datetime NOT NULL,
-  `date_activation` datetime NOT NULL,
+  `date_activation` datetime DEFAULT NULL,
   `cle_activation` varchar(50) NOT NULL,
   PRIMARY KEY (`id_personne`),
   KEY `id_dispo` (`id_dispo`),
   KEY `id_competence` (`id_competences`),
-  KEY `id_parrain` (`id_parrain`),
+  KEY `id_parain` (`id_parrain`),
   KEY `id_statut` (`id_statut`),
   KEY `id_action` (`id_action`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `personnes`
+--
+
+INSERT INTO `personnes` (`id_personne`, `nom`, `prenom`, `tel_port`, `email`, `cp`, `date_naissance`, `sexe`, `id_action`, `id_dispo`, `id_competences`, `chef_equipe`, `RQ`, `id_parrain`, `nom_parrain`, `prenom_parrain`, `email_parrain`, `id_statut`, `date_form`, `date_activation`, `cle_activation`) VALUES
+(1, 'de la mardire', 'prénom', '0232325445', 'test@test.com', '65', '2012-02-12', 'Homme', 1, 1, 1, '0', '', NULL, 'test', 'test', 'gdelamardiere@gmail.com', 1, '2013-02-13 18:56:16', NULL, '33f9776898f3e19f30942933e604d0d1'),
+(2, 'de la mardire', 'prénom2', '0232325445', 'test2@test.com', '65', '2012-02-12', 'Femme', 1, 1, 1, '0', '', NULL, 'test', 'test', 'gdelamardiere@gmail.com', 1, '2013-02-13 18:56:44', NULL, '5b40749143c1f2e9adebee4d622a9b07'),
+(3, 'de la mardire', 'prénom', '0232325445', 'gdelamardiere@gmail.com', '65987', '2012-02-12', 'Homme', 1, 2, 4, '1', 'yter', NULL, 'test', 'test', 'test@test.com', 2, '2013-02-13 19:19:37', '2013-02-13 19:57:16', '5a941d0d5b11b724d0f15603cb5772af');
 
 -- --------------------------------------------------------
 
@@ -150,6 +167,7 @@ CREATE TABLE IF NOT EXISTS `personnes` (
 -- Structure de la table `statuts`
 --
 
+DROP TABLE IF EXISTS `statuts`;
 CREATE TABLE IF NOT EXISTS `statuts` (
   `id_statut` int(11) NOT NULL AUTO_INCREMENT,
   `statut` varchar(20) NOT NULL,
@@ -174,11 +192,11 @@ INSERT INTO `statuts` (`id_statut`, `statut`, `actif`) VALUES
 -- Contraintes pour la table `personnes`
 --
 ALTER TABLE `personnes`
-  ADD CONSTRAINT `personnes_ibfk_27` FOREIGN KEY (`id_statut`) REFERENCES `statuts` (`id_statut`),
   ADD CONSTRAINT `personnes_ibfk_23` FOREIGN KEY (`id_action`) REFERENCES `actions` (`id_action`),
   ADD CONSTRAINT `personnes_ibfk_24` FOREIGN KEY (`id_dispo`) REFERENCES `disponibilites` (`id_dispo`),
   ADD CONSTRAINT `personnes_ibfk_25` FOREIGN KEY (`id_competences`) REFERENCES `competences` (`id_competences`),
-  ADD CONSTRAINT `personnes_ibfk_26` FOREIGN KEY (`id_parrain`) REFERENCES `personnes` (`id_personne`);
+  ADD CONSTRAINT `personnes_ibfk_26` FOREIGN KEY (`id_parrain`) REFERENCES `personnes` (`id_personne`),
+  ADD CONSTRAINT `personnes_ibfk_27` FOREIGN KEY (`id_statut`) REFERENCES `statuts` (`id_statut`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

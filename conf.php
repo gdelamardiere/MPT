@@ -1,5 +1,5 @@
 <?php
-$path = 'J:\EasyPHP-5.3.8.1\www\MPT\gdata\library';
+$path = dirname(__FILE__).'\gdata\library';
 set_include_path(get_include_path() . PATH_SEPARATOR . $path);
 //-------------------------------------------------------------------------------
 // compte gmail:

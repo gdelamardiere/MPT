@@ -215,7 +215,7 @@ class personne{
 		if($stmt->rowCount()==1){
 			$ret=true;
 			$test= new spreedsheet();
-			$test->add_personne();
+			$test->add_personne($this->getInfosPersonne($cle_activation));
 		}
 		return $ret;
 	}
@@ -228,6 +228,12 @@ class personne{
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute() ;
 		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function getInfosPersonne($cle_activation){
+		$stmt = $this->pdo->prepare("SELECT * FROM `personnes`  WHERE cle_activation=:cle_activation");
+		$stmt->execute(array("cle_activation"=>$cle_activation)) ;
+		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function send_mail($txt, $to, $subject, $from, $from_addr, $cc = null, $bcc = null, $rel_path = null) {

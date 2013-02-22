@@ -3,9 +3,10 @@ Zend_Loader::loadClass('Zend_Gdata_AuthSub');
 Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
 Zend_Loader::loadClass('Zend_Gdata_Spreadsheets');
 Zend_Loader::loadClass('Zend_Gdata_Docs');
-Zend_Loader::loadClass('database','classes');
+Zend_Loader::loadClass('database',ROOT.'classes');
 
 class spreedsheet {
+	private $pdo;
 	private $columns = array(
 		'jepeuxêtrechefdequipe',
 		'col2',
@@ -50,11 +51,12 @@ class spreedsheet {
 
 
 	public function __construct(){
+		$this->pdo=database::getInstance();
 		$service = Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME;
 		$client = Zend_Gdata_ClientLogin::getHttpClient(USERNAME, PASSWORD, $service);
 		$this->spreadSheetService = new Zend_Gdata_Spreadsheets($client);
 
-		$this->columns=unserialize(file_get_contents("entete_fichier_google.txt"));
+		$this->columns=unserialize(file_get_contents(ROOT."entete_fichier_google.txt"));
 		$this->columnCount=sizeof($this->columns);
 	}
 
@@ -98,23 +100,26 @@ class spreedsheet {
 				$this->columns[$i] = $this->filtreName($columnName);
 			}    
 		}
-		file_put_contents("entete_fichier_google.txt",serialize($this->columns));
+		file_put_contents(ROOT."entete_fichier_google.txt",serialize($this->columns));
+		return $this->columns;
 	}
 
 
 	public function filtreName($columnName){
-		return str_replace("'","",strtolower(str_replace(' ', '', $columnName)));//rajouter :
+		$value=array("'",":"," ");
+		$replace=array("","","");
+		return str_replace($value,$replace,strtolower($columnName));
 	}
 
 
 
 	public function getRelationDbGd($actif=""){
-		$where=($actif==1||$actif==0)?"WHERE actif='".$actif."'":"";
+		$where=($actif=='1'||$actif=='0')?"WHERE actif='".$actif."'":"";
 		$stmt = $this->pdo->prepare("SELECT * FROM `r_db_gd`  ".$where);
-		$stmt->execute() ;
+		$stmt->execute();
 		$ret=array();
 		while($relation=$stmt->fetch(PDO::FETCH_ASSOC)){
-			$ret[]=$relation;
+			$ret[$relation['name_gd']]=$relation;
 		}
 		return $ret;
 	}
@@ -124,15 +129,21 @@ class spreedsheet {
 			$aData["name_db"]=null;
 			$aData["table_db"]=null;
 			$aData["actif"]='0';
+			$aData["where"]='0';
 		}
 		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`r_db_gd` (
-			`id_r_db_gd` ,`name_gd` ,`position_gd` ,`name_db` ,`table_db` ,`actif`
+			`id_r_db_gd` ,`name_gd` ,`position_gd` ,`name_db` ,`table_db` ,`actif` ,`where`
 			)
 		VALUES (
 			NULL ,  :name_gd,  :position_gd,  :name_db, 
-			:table_db,  :actif)"
+			:table_db,  :actif , :where)"
 		);
-		$stmt->execute($aValue);
+		$stmt->execute($aData);
+	}
+
+	public function DisabledRelationDbGd($aName){
+		$stmt = $this->pdo->prepare("UPDATE `r_db_gd` SET `actif`='0' WHERE name_gd=:name_gd");
+		$stmt->execute($aName);
 	}
 
 
@@ -140,8 +151,22 @@ class spreedsheet {
 		$aRelation=$this->getRelationDbGd();
 		$aColumns=$this->getColumn();
 		//insertion nouveau champ en base
+		var_dump($aColumns);
+		var_dump($aRelation);
 		foreach($aColumns as $key=>$value){
-			if()
+			if(!array_key_exists($value, $aRelation)){
+				$this->InsertRelationDbGd(array("name_gd"=>$value,"position_gd"=>$key));
+			}
+			else if($key!=$aRelation[$value]["position_gd"]){
+				echo "mauvais positionnement";
+			}
+		}
+
+		//desactivation ancien champ GD
+		foreach($aRelation as $key=>$aValue){
+			if(!in_array($key, $aColumns)){
+				$this->DisabledRelationDbGd(array("name_gd"=>$key));
+			}
 		}
 	}
 

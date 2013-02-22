@@ -20,5 +20,6 @@ define("USERNAME_BASE", "root");
 define("PASSWORD_BASE", "");
 
 define("SITE_FRONT","localhost/MPT/");
+define("ROOT",dirname(__FILE__)."/");
 
 ?>

@@ -123,11 +123,11 @@ class spreedsheet {
 
 
 	public function majRelationDbGd(){
-		$aRelation=$this->getRelationDbGd();
+		$aRelation=$this->getRelationGdDb();
 		$aColumns=$this->getColumn();
-		 echo "<pre>";
-		 var_dump($aRelation;$aColumns);
-		 echo "</pre>";
+		 // echo "<pre>";
+		 // var_dump($aRelation,$aColumns);
+		 // echo "</pre>";
 		//insertion nouveau champ en base
 		foreach($aColumns as $key=>$value){
 			if(!array_key_exists($value, $aRelation)){

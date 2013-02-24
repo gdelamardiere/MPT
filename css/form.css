@@ -27,7 +27,7 @@ h2{
 }
 
 label{
-	width:90px;
+	width:300px;
 	display:inline-block;
 	margin-right: 20px;
     vertical-align: top;
@@ -39,6 +39,9 @@ label{
 	display:block;
 	margin-bottom: 0px;
 }
+.label-input{
+	display:block;
+}
 .label-checkbox{
 	width:400px;
 	font-weight: normal;
@@ -47,6 +50,10 @@ label{
 	font-weight: normal;
 }
 
+.input{
+	margin:0px;
+	padding:0px;
+}
 ul{
 	list-style: none outside none;
     margin: 0.5em 0 0;
@@ -61,4 +68,26 @@ li{
 
 .erreur{
 	color:red;
+	margin-top: 0px;
+	padding-top: :0px;
 }
+.red{
+	color:red;
+}
+.message{
+	font-style:italic;
+	font-size: 10px;
+	color:#333333;
+	padding: 0px;
+	margin:0px;
+}
+
+#captcha{
+	border: 1px solid #000; 
+	margin-right: 15px;
+}
+
+.captcha{
+	margin-bottom: 30px;
+}
+

@@ -102,7 +102,7 @@ class spreedsheet {
 			$aData["name_db"]=null;
 			$aData["actif"]='0';
 		}
-		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`r_db_gd` (
+		$stmt = $this->pdo->prepare("INSERT INTO  `r_db_gd` (
 			`id_r_db_gd` ,`name_gd` ,`position_gd` ,`name_db`  ,`actif` 
 			)
 		VALUES (
@@ -112,7 +112,7 @@ class spreedsheet {
 	}
 
 	public function UpdateRelationDbGd($name_gd,$position_gd){		
-		$stmt = $this->pdo->prepare("UPDATE `lmpt`.`r_db_gd` SET `position_gd`=:position_gd WHERE `name_gd`=:name_gd ");
+		$stmt = $this->pdo->prepare("UPDATE `r_db_gd` SET `position_gd`=:position_gd WHERE `name_gd`=:name_gd ");
 		$stmt->execute(array("name_gd"=>$name_gd,"position_gd"=>$position_gd));
 	}
 

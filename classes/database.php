@@ -1,5 +1,5 @@
 <?php
-
+define("PREFIX_BASE", "lmpt_dev_");
 class database extends PDO {
 
 	/**
@@ -7,7 +7,7 @@ class database extends PDO {
 	 * @access private
 	 * @static
 	 */
-	private static $_instance = null;
+	private static $_instance = null;	
 
 	 /**
 		* Constructeur de la classe
@@ -57,6 +57,64 @@ class database extends PDO {
 
 		 return self::$_instance;
 	 }
+
+
+
+
+
+    public function exec($statement)
+    {
+        $statement = $this->_tablePrefixSuffix($statement);
+        return parent::exec($statement);
+    }
+
+    public function prepare($statement, $driver_options = array())
+    {var_dump($statement);
+        $statement = $this->_tablePrefixSuffix($statement);
+        var_dump(parent::prepare($statement, $driver_options));
+        return parent::prepare($statement, $driver_options);
+    }
+
+    public function query($statement)
+    {
+        $statement = $this->_tablePrefixSuffix($statement);
+        $args      = func_get_args();
+
+        if (count($args) > 1) {
+            return call_user_func_array(array($this, 'parent::query'), $args);
+        } else {
+            return parent::query($statement);
+        }
+    }
+
+    protected function _tablePrefixSuffix($statement)
+    {
+    	$sql_find = array(
+                        '#(FROM\s+`?)#i',
+                        '#(INTO\s+`?)#i',
+                        '#(JOIN\s?`?)#i',
+                        '#(JOIN\s?\(\s?`?)#i',
+                        '#(UPDATE\s+`?)#i',
+                        '#(CREATE TABLE\s+`?)#i',
+                         '#'.PREFIX_BASE.'INFORMATION_SCHEMA#i',
+                          '#TABLE_NAME\s?=\s?\'(.+)\'#i'
+
+        );
+
+        $sql_replace = array(
+                '$1'.PREFIX_BASE,
+                '$1'.PREFIX_BASE,
+                '$1'.PREFIX_BASE,
+                '$1'.PREFIX_BASE,
+                '$1'.PREFIX_BASE,
+                '$1'.PREFIX_BASE,
+                'INFORMATION_SCHEMA',
+                'TABLE_NAME = \''.PREFIX_BASE.'$1\''
+
+        );
+        return preg_replace($sql_find,$sql_replace,$statement);
+    }
+
  }
  
  ?>

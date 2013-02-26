@@ -28,7 +28,7 @@ class personne{
 		// echo "<pre>";
 		// var_dump($aValue);
 		// echo "</pre>";
-		$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`personnes` (
+		$stmt = $this->pdo->prepare("INSERT INTO  `personnes` (
 			`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
 			`cp` ,`date_naissance` ,`sexe` ,`chef_equipe` ,`RQ` ,`id_parrain` ,
 			`nom_parrain` ,`prenom_parrain` ,`email_parrain` ,`email_equipe` ,
@@ -50,7 +50,7 @@ class personne{
 
 		//actions
 		if(!empty($aValue['action'])){
-			$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`r_actions_personnes` (
+			$stmt = $this->pdo->prepare("INSERT INTO  `r_actions_personnes` (
 				`id_personne` ,`id_action`
 				)
 			VALUES (
@@ -64,7 +64,7 @@ class personne{
 
 		//competences
 		if(!empty($aValue['competences'])){
-			$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`r_competences_personnes` (
+			$stmt = $this->pdo->prepare("INSERT INTO  `r_competences_personnes` (
 				`id_personne` ,`id_competence`
 				)
 			VALUES (
@@ -77,7 +77,7 @@ class personne{
 
 		//dispo
 		if(!empty($aValue['dispo'])){
-			$stmt = $this->pdo->prepare("INSERT INTO  `lmpt`.`r_disponibilites_personnes` (
+			$stmt = $this->pdo->prepare("INSERT INTO  `r_disponibilites_personnes` (
 				`id_personne` ,`id_dispo`
 				)
 			VALUES (

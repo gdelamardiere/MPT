@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.9
+-- version 3.4.5
 -- http://www.phpmyadmin.net
 --
--- Client: localhost
--- Généré le : Dim 24 Février 2013 à 19:46
--- Version du serveur: 5.5.28
--- Version de PHP: 5.3.15
+-- Client: 127.0.0.1
+-- Généré le : Mar 26 Février 2013 à 15:28
+-- Version du serveur: 5.5.16
+-- Version de PHP: 5.3.8
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -23,11 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `actions`
+-- Structure de la table `lmpt_dev_actions`
 --
 
-DROP TABLE IF EXISTS `actions`;
-CREATE TABLE IF NOT EXISTS `actions` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_actions` (
   `id_action` int(11) NOT NULL AUTO_INCREMENT,
   `action` varchar(100) NOT NULL,
   `actif` enum('0','1') NOT NULL,
@@ -35,10 +34,10 @@ CREATE TABLE IF NOT EXISTS `actions` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
--- Contenu de la table `actions`
+-- Contenu de la table `lmpt_dev_actions`
 --
 
-INSERT INTO `actions` (`id_action`, `action`, `actif`) VALUES
+INSERT INTO `lmpt_dev_actions` (`id_action`, `action`, `actif`) VALUES
 (1, 'Tracter', '1'),
 (2, 'Participer à des actions ponctuelles', '1'),
 (3, 'Aider à la manifestation du 24', '1');
@@ -46,11 +45,10 @@ INSERT INTO `actions` (`id_action`, `action`, `actif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `competences`
+-- Structure de la table `lmpt_dev_competences`
 --
 
-DROP TABLE IF EXISTS `competences`;
-CREATE TABLE IF NOT EXISTS `competences` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_competences` (
   `id_competences` int(11) NOT NULL AUTO_INCREMENT,
   `competence` varchar(50) NOT NULL,
   `actif` enum('0','1') NOT NULL,
@@ -58,10 +56,10 @@ CREATE TABLE IF NOT EXISTS `competences` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
--- Contenu de la table `competences`
+-- Contenu de la table `lmpt_dev_competences`
 --
 
-INSERT INTO `competences` (`id_competences`, `competence`, `actif`) VALUES
+INSERT INTO `lmpt_dev_competences` (`id_competences`, `competence`, `actif`) VALUES
 (1, 'Web', '1'),
 (2, 'Communication', '1'),
 (3, 'Audiovisuel', '1'),
@@ -73,11 +71,10 @@ INSERT INTO `competences` (`id_competences`, `competence`, `actif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `disponibilites`
+-- Structure de la table `lmpt_dev_disponibilites`
 --
 
-DROP TABLE IF EXISTS `disponibilites`;
-CREATE TABLE IF NOT EXISTS `disponibilites` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_disponibilites` (
   `id_dispo` int(11) NOT NULL AUTO_INCREMENT,
   `dispo` varchar(50) NOT NULL,
   `actif` enum('0','1') NOT NULL,
@@ -85,10 +82,10 @@ CREATE TABLE IF NOT EXISTS `disponibilites` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
--- Contenu de la table `disponibilites`
+-- Contenu de la table `lmpt_dev_disponibilites`
 --
 
-INSERT INTO `disponibilites` (`id_dispo`, `dispo`, `actif`) VALUES
+INSERT INTO `lmpt_dev_disponibilites` (`id_dispo`, `dispo`, `actif`) VALUES
 (1, 'Le matin', '1'),
 (2, 'Le soir', '1'),
 (3, 'En journée', '1'),
@@ -97,11 +94,10 @@ INSERT INTO `disponibilites` (`id_dispo`, `dispo`, `actif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `equipe`
+-- Structure de la table `lmpt_dev_equipe`
 --
 
-DROP TABLE IF EXISTS `equipe`;
-CREATE TABLE IF NOT EXISTS `equipe` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_equipe` (
   `id_equipe` int(11) NOT NULL AUTO_INCREMENT,
   `valeur` varchar(50) NOT NULL,
   `actif` enum('0','1') NOT NULL,
@@ -109,10 +105,10 @@ CREATE TABLE IF NOT EXISTS `equipe` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
--- Contenu de la table `equipe`
+-- Contenu de la table `lmpt_dev_equipe`
 --
 
-INSERT INTO `equipe` (`id_equipe`, `valeur`, `actif`) VALUES
+INSERT INTO `lmpt_dev_equipe` (`id_equipe`, `valeur`, `actif`) VALUES
 (1, '', '1'),
 (2, 'Logistique', '1'),
 (3, 'Sécurité (Homme uniquement)', '1'),
@@ -121,11 +117,10 @@ INSERT INTO `equipe` (`id_equipe`, `valeur`, `actif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `historiques`
+-- Structure de la table `lmpt_dev_historiques`
 --
 
-DROP TABLE IF EXISTS `historiques`;
-CREATE TABLE IF NOT EXISTS `historiques` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_historiques` (
   `id_histo` int(11) NOT NULL AUTO_INCREMENT,
   `id_personne` int(11) NOT NULL,
   `champ` varchar(50) NOT NULL,
@@ -139,11 +134,10 @@ CREATE TABLE IF NOT EXISTS `historiques` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `personnes`
+-- Structure de la table `lmpt_dev_personnes`
 --
 
-DROP TABLE IF EXISTS `personnes`;
-CREATE TABLE IF NOT EXISTS `personnes` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_personnes` (
   `id_personne` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(50) NOT NULL,
   `prenom` varchar(30) NOT NULL,
@@ -170,57 +164,39 @@ CREATE TABLE IF NOT EXISTS `personnes` (
   KEY `id_statut` (`id_statut`),
   KEY `id_temps` (`id_temps`),
   KEY `id_equipe` (`id_equipe`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Contenu de la table `personnes`
---
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `r_actions_personnes`
+-- Structure de la table `lmpt_dev_r_actions_personnes`
 --
 
-DROP TABLE IF EXISTS `r_actions_personnes`;
-CREATE TABLE IF NOT EXISTS `r_actions_personnes` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_r_actions_personnes` (
   `id_personne` int(11) NOT NULL,
   `id_action` int(11) NOT NULL,
   KEY `id_personne` (`id_personne`,`id_action`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `r_actions_personnes`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `r_competences_personnes`
+-- Structure de la table `lmpt_dev_r_competences_personnes`
 --
 
-DROP TABLE IF EXISTS `r_competences_personnes`;
-CREATE TABLE IF NOT EXISTS `r_competences_personnes` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_r_competences_personnes` (
   `id_competence` int(11) NOT NULL,
   `id_personne` int(11) NOT NULL,
   KEY `id_competence` (`id_competence`,`id_personne`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `r_competences_personnes`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `r_db_gd`
+-- Structure de la table `lmpt_dev_r_db_gd`
 --
 
-DROP TABLE IF EXISTS `r_db_gd`;
-CREATE TABLE IF NOT EXISTS `r_db_gd` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_r_db_gd` (
   `id_r_db_gd` int(11) NOT NULL AUTO_INCREMENT,
   `name_gd` varchar(80) NOT NULL,
   `position_gd` int(11) NOT NULL,
@@ -230,10 +206,10 @@ CREATE TABLE IF NOT EXISTS `r_db_gd` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
--- Contenu de la table `r_db_gd`
+-- Contenu de la table `lmpt_dev_r_db_gd`
 --
 
-INSERT INTO `r_db_gd` (`id_r_db_gd`, `name_gd`, `position_gd`, `name_db`, `actif`) VALUES
+INSERT INTO `lmpt_dev_r_db_gd` (`id_r_db_gd`, `name_gd`, `position_gd`, `name_db`, `actif`) VALUES
 (1, 'timestamp', 0, '', '0'),
 (2, 'nom', 1, 'nom', '1'),
 (3, 'prÃ©nom', 2, 'prenom', '1'),
@@ -257,29 +233,22 @@ INSERT INTO `r_db_gd` (`id_r_db_gd`, `name_gd`, `position_gd`, `name_db`, `actif
 -- --------------------------------------------------------
 
 --
--- Structure de la table `r_disponibilites_personnes`
+-- Structure de la table `lmpt_dev_r_disponibilites_personnes`
 --
 
-DROP TABLE IF EXISTS `r_disponibilites_personnes`;
-CREATE TABLE IF NOT EXISTS `r_disponibilites_personnes` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_r_disponibilites_personnes` (
   `id_dispo` int(11) NOT NULL,
   `id_personne` int(11) NOT NULL,
   KEY `id_dispo` (`id_dispo`,`id_personne`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Contenu de la table `r_disponibilites_personnes`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `statuts`
+-- Structure de la table `lmpt_dev_statuts`
 --
 
-DROP TABLE IF EXISTS `statuts`;
-CREATE TABLE IF NOT EXISTS `statuts` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_statuts` (
   `id_statut` int(11) NOT NULL AUTO_INCREMENT,
   `statut` varchar(20) NOT NULL,
   `actif` enum('0','1') NOT NULL,
@@ -287,10 +256,10 @@ CREATE TABLE IF NOT EXISTS `statuts` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
--- Contenu de la table `statuts`
+-- Contenu de la table `lmpt_dev_statuts`
 --
 
-INSERT INTO `statuts` (`id_statut`, `statut`, `actif`) VALUES
+INSERT INTO `lmpt_dev_statuts` (`id_statut`, `statut`, `actif`) VALUES
 (1, 'WAIT_ACTIVATION', '1'),
 (2, 'WAIT_VALIDATION', '1'),
 (3, 'VALIDATE', '1'),
@@ -300,11 +269,10 @@ INSERT INTO `statuts` (`id_statut`, `statut`, `actif`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `temps`
+-- Structure de la table `lmpt_dev_temps`
 --
 
-DROP TABLE IF EXISTS `temps`;
-CREATE TABLE IF NOT EXISTS `temps` (
+CREATE TABLE IF NOT EXISTS `lmpt_dev_temps` (
   `id_temps` int(11) NOT NULL AUTO_INCREMENT,
   `valeur` varchar(50) NOT NULL,
   `actif` enum('0','1') NOT NULL DEFAULT '1',
@@ -312,10 +280,10 @@ CREATE TABLE IF NOT EXISTS `temps` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
--- Contenu de la table `temps`
+-- Contenu de la table `lmpt_dev_temps`
 --
 
-INSERT INTO `temps` (`id_temps`, `valeur`, `actif`) VALUES
+INSERT INTO `lmpt_dev_temps` (`id_temps`, `valeur`, `actif`) VALUES
 (1, 'Moins de 3h par semaine', '1'),
 (2, 'Entre 3 et 5h par semaine', '1'),
 (3, 'Entre 5 et 10h par semaine', '1'),
@@ -327,11 +295,11 @@ INSERT INTO `temps` (`id_temps`, `valeur`, `actif`) VALUES
 --
 
 --
--- Contraintes pour la table `personnes`
+-- Contraintes pour la table `lmpt_dev_personnes`
 --
-ALTER TABLE `personnes`
-  ADD CONSTRAINT `personnes_ibfk_26` FOREIGN KEY (`id_parrain`) REFERENCES `personnes` (`id_personne`),
-  ADD CONSTRAINT `personnes_ibfk_27` FOREIGN KEY (`id_statut`) REFERENCES `statuts` (`id_statut`);
+ALTER TABLE `lmpt_dev_personnes`
+  ADD CONSTRAINT `lmpt_dev_personnes_ibfk_26` FOREIGN KEY (`id_parrain`) REFERENCES `lmpt_dev_personnes` (`id_personne`),
+  ADD CONSTRAINT `lmpt_dev_personnes_ibfk_27` FOREIGN KEY (`id_statut`) REFERENCES `lmpt_dev_statuts` (`id_statut`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

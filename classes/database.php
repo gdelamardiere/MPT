@@ -1,5 +1,4 @@
 <?php
-define("PREFIX_BASE", "lmpt_dev_");
 class database extends PDO {
 
 	/**
@@ -89,10 +88,9 @@ class database extends PDO {
 
     protected function _tablePrefixSuffix($statement)
     {
-    	$sql_find = array(
+    		$sql_find = array(
                         '#(FROM\s+`?)#i',
                         '#(INTO\s+`?)#i',
-                        '#(JOIN\s?`?)#i',
                         '#(JOIN\s?\(\s?`?)#i',
                         '#(UPDATE\s+`?)#i',
                         '#(CREATE TABLE\s+`?)#i',
@@ -102,7 +100,6 @@ class database extends PDO {
         );
 
         $sql_replace = array(
-                '$1'.PREFIX_BASE,
                 '$1'.PREFIX_BASE,
                 '$1'.PREFIX_BASE,
                 '$1'.PREFIX_BASE,

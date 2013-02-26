@@ -367,7 +367,7 @@ class personne{
 		
 EOF;
 		
-		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "activation aide pour La Manif Pour Tous", "gdelamardiere@test.com", "gdelamardiere@test.com");
+		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "activation aide pour La Manif Pour Tous", EMAIL_MANIF, EMAIL_MANIF);
 	}
 
 	public function activate($cle_activation){

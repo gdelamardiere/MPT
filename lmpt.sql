@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.5
+-- version 3.4.9
 -- http://www.phpmyadmin.net
 --
--- Client: 127.0.0.1
--- Généré le : Mar 26 Février 2013 à 15:28
--- Version du serveur: 5.5.16
--- Version de PHP: 5.3.8
+-- Client: localhost
+-- Généré le : Sam 02 Mars 2013 à 19:52
+-- Version du serveur: 5.5.28
+-- Version de PHP: 5.3.15
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `lmpt_dev_competences` (
   `competence` varchar(50) NOT NULL,
   `actif` enum('0','1') NOT NULL,
   PRIMARY KEY (`id_competences`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `lmpt_dev_competences`
@@ -109,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `lmpt_dev_equipe` (
 --
 
 INSERT INTO `lmpt_dev_equipe` (`id_equipe`, `valeur`, `actif`) VALUES
-(1, '', '1'),
 (2, 'Logistique', '1'),
 (3, 'Sécurité (Homme uniquement)', '1'),
 (4, 'Accueil', '1');
@@ -156,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `lmpt_dev_personnes` (
   `id_equipe` int(11) NOT NULL,
   `id_statut` int(11) NOT NULL,
   `id_temps` int(11) NOT NULL,
+  `autre_competences` varchar(100) NOT NULL,
   `date_form` datetime NOT NULL,
   `date_activation` datetime DEFAULT NULL,
   `cle_activation` varchar(50) NOT NULL,

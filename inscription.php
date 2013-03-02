@@ -216,17 +216,20 @@ exit;
 					</p>
 				</div>	
 				<div class="champ">
-					<div class="select">
+					<div class="radio">
 						<label class="label">Je voudrais être dans les équipes de : <span class="red">*</span></label>
-						<select name="id_equipe">
+						<ul>
 						<?php foreach($equipe as $key=>$value){?>
-							<option value="<?php echo $key;?>" <?php if($id_equipe==$key){echo 'selected="selected"';}?>><?php echo utf8_encode($value);?></option>
+								<li>
+									<input type="radio" name="id_equipe" value="<?php echo $key;?>" id="chef_equipe_<?php echo $key;?>" class="required-radio"  <?php if($id_equipe==$key){echo 'checked="checked"';}?>>
+									<label class="label-radio" for="chef_equipe_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
+								</li>
 						<?php }?>
-						</select>
+						</ul>
 						
 					</div>
-					<p class="erreur" id="erreur_chef_equipe" style="display:<?php echo ($erreur_chef_equipe=="")?"display:none":"";?>">
-						<?php echo $erreur_chef_equipe;?>
+					<p class="erreur" id="erreur_id_equipe" style="display:<?php echo ($erreur_id_equipe=="")?"display:none":"";?>">
+						<?php echo $erreur_id_equipe;?>
 					</p>
 				</div>	
 				<div class="champ">

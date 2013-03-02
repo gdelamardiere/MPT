@@ -409,7 +409,7 @@ EOF;
 			$ret[]=$champ['COLUMN_NAME'];
 		}
 		$ret[]="id_dispo";
-		$ret[]="id_actions";
+		$ret[]="id_action";
 		$ret[]="id_competences";
 		return $ret;
 	}

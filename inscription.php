@@ -183,7 +183,8 @@ exit;
 				<div class="checkbox">
 					<label class="label">Je suis motivé pour : <span class="red">*</span></label>
 					<ul>
-						<?php foreach($actions as $key=>$value){?>
+						<?php $id_action=(empty($id_action))?array():$id_action;
+						foreach($actions as $key=>$value){?>
 							<li>
 								<input type="checkbox" name="id_action[]" value="<?php echo $key;?>" id="id_action_<?php echo $key;?>" class="required-checbox" <?php if(in_array($key,$id_action)){echo 'checked="checked"';}?>>
 								<label class="label-checkbox" for="id_action_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
@@ -233,7 +234,8 @@ exit;
 						<label class="label">Je suis disponible :</label>
 						<p class="message">Pour des actions ponctuelles et du tractage</p>
 						<ul>
-							<?php foreach($dispo as $key=>$value){?>
+							<?php $id_dispo=(empty($id_dispo))?array():$id_dispo;
+							foreach($dispo as $key=>$value){?>
 								<li>
 									<input type="checkbox" name="id_dispo[]" value="<?php echo $key;?>" id="id_dispo_<?php echo $key;?>" class="required-checbox"  <?php if(in_array($key,$id_dispo)){echo 'checked="checked"';}?>>
 									<label class="label-checkbox" for="id_dispo_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
@@ -267,7 +269,8 @@ exit;
 							<label class="label">J&#39;ai les compétences suivantes :</label>
 						<p class="message">Dans "autre" vous pouvez préciser votre métier (Médecin urgentiste, DJ, sécurité, etc.)</p>
 							<ul>
-								<?php foreach($competences as $key=>$value){?>
+								<?php  $id_competences=(empty($id_competences))?array():$id_competences;
+								foreach($competences as $key=>$value){?>
 									<li>
 										<input type="checkbox" name="id_competences[]" value="<?php echo $key;?>" id="id_competences_<?php echo $key;?>" class="required-checbox"  <?php if(in_array($key,$id_competences)){echo 'checked="checked"';}?>>
 										<label class="label-checkbox" for="id_competences_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>

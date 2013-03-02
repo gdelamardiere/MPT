@@ -1,9 +1,8 @@
 <?php
 require_once('conf.php'); 
-require_once 'Zend/Loader.php';
-Zend_Loader::loadClass('database',"classes");
-Zend_Loader::loadClass('personne',"classes");
-Zend_Loader::loadClass('spreedsheet',"classes");
+require_once(ROOT.'classes/database.php');
+require_once(ROOT.'classes/personne.php');
+require_once(ROOT.'classes/spreedsheet.php');
 
 if(empty($_GET['key'])){
 	exit;

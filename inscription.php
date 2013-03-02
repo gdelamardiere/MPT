@@ -269,7 +269,7 @@ exit;
 							<label class="label">J&#39;ai les compétences suivantes :</label>
 						<p class="message">Dans "autre" vous pouvez préciser votre métier (Médecin urgentiste, DJ, sécurité, etc.)</p>
 							<ul>
-								<?php  $id_competences=(empty($id_competences))?array():$id_competences;
+								<?php  $id_competences=(empty($id_competences))?array():$id_competences; 
 								foreach($competences as $key=>$value){?>
 									<li>
 										<input type="checkbox" name="id_competences[]" value="<?php echo $key;?>" id="id_competences_<?php echo $key;?>" class="required-checbox"  <?php if(in_array($key,$id_competences)){echo 'checked="checked"';}?>>
@@ -277,10 +277,10 @@ exit;
 									</li>
 									<?php }?>
 									<li>
-									<label>
-										<input type="checkbox" name="id_competences[]" value="Autre" id="id_competences_autre" class="required-checbox">Autre:
+									<label for="autre_competences">
+										<input type="checkbox" name="id_competences[]" value="autre" id="id_competences_autre" class="required-checbox" <?php if(in_array("autre",$id_competences)){echo 'checked="checked"';}?>> Autre:
 									</label>
-									<input type="text" name="entry.1543224897.other_option_response" value="" class="ss-q-other" id="entry_1543224897_other_option_response" dir="auto" aria-label="Other">
+									<input type="text" name="autre_competences" value="<?php echo $autre_competences;?>" id="autre_competences" class="required-input">
 									</li>
 								</ul>
 							</div>
@@ -324,7 +324,7 @@ exit;
 			<h2>Informations complémentaires</h2>
 			<div class="champ">
 				<div class="input">
-					<label class="label-input" for="email_equipe">Email du parrain :</label>
+					<label class="label-input" for="email_equipe">Email de la personne dont je souhaite rejoindre l'équipe :</label>
 					<p class="message">Nous faisons notre possible pour regrouper les amis entre eux, 
 						mais nous ne sommes pas des magiciens, la garantie à 100% est impossible. 
 						Nous comptons sur votre engagement pour la cause.</p>

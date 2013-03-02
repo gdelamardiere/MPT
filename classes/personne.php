@@ -3,6 +3,7 @@ require_once(ROOT.'classes/lib.php');
 class personne{
 	private $pdo;
 	public $aInfos;
+	private $post;
 
 
 	private $aObligatedValue=array("nom"=>"verif_string" ,"prenom"=>"verif_string" ,
@@ -16,7 +17,14 @@ class personne{
 	private $aOtherValue=array("id_dispo"=>"verif_dispo" ,
 		"id_competences"=>"verif_competence"  ,
 		"RQ"=>"verif_string" ,"id_equipe"=>"verif_equipe",
-		"email_equipe"=>"verif_email");
+		"email_equipe"=>"verif_email","autre_competences"=>"verif_string");
+
+	private $value_personne=array("nom","prenom","tel_port","email",
+			"cp","date_naissance","sexe", 
+			"chef_equipe", "RQ","id_parrain","nom_parrain", 
+			"prenom_parrain","email_parrain","email_equipe",
+			"id_equipe", "id_statut","id_temps","date_form","cle_activation","autre_competences"
+		);
 
 	function __construct(){
 		$this->pdo=database::getInstance();
@@ -25,16 +33,13 @@ class personne{
 
 
 	public function insert_personne($aValue){
-		// echo "<pre>";
-		// var_dump($aValue);
-		// echo "</pre>";
 		$stmt = $this->pdo->prepare("INSERT INTO  `personnes` (
 			`id_personne` ,`nom` ,`prenom` ,`tel_port` ,`email` ,
 			`cp` ,`date_naissance` ,`sexe` ,`chef_equipe` ,`RQ` ,`id_parrain` ,
 			`nom_parrain` ,`prenom_parrain` ,`email_parrain` ,`email_equipe` ,
 			`id_equipe` ,`id_statut` ,`id_temps` ,
 			`date_form` ,`date_activation` ,
-			`cle_activation`
+			`cle_activation`,`autre_competences`
 			)
 		VALUES (
 			NULL ,  :nom,  :prenom,  :tel_port, 
@@ -43,7 +48,7 @@ class personne{
 			:chef_equipe, :RQ,  :id_parrain,  :nom_parrain, 
 			:prenom_parrain,  :email_parrain,  :email_equipe,
 			:id_equipe, :id_statut,  :id_temps,  :date_form,  null,  
-			:cle_activation)"
+			:cle_activation,:autre_competences)"
 		);
 		$stmt->execute($aValue['personne']);
 		$id_personne=$this->pdo->lastInsertId();
@@ -71,7 +76,9 @@ class personne{
 				:id_personne,:id)"
 			);
 			foreach($aValue['competences'] as $value){
-				$stmt->execute(array("id_personne"=>$id_personne,"id"=>$value));
+				if($value!="autre"){
+					$stmt->execute(array("id_personne"=>$id_personne,"id"=>$value));
+				}				
 			}
 		}
 
@@ -148,7 +155,11 @@ class personne{
 		$aVal=$this->getCompetences();
 		$ret=true;
 		foreach($aId as $id){
-			if(!array_key_exists($id,$aVal)){
+			if($id!="autre" && !array_key_exists($id,$aVal)){
+				$ret=false;
+				break;
+			}			
+			if($id=="autre" && $this->post['autre_competences']==""){
 				$ret=false;
 				break;
 			}
@@ -193,6 +204,7 @@ class personne{
 
 
 	public function verif_value($aPost){
+		$this->post=$aPost;
 		$return=true;
 		$aListeVide=array();
 		$aListeNonCorrect=array();
@@ -224,9 +236,9 @@ class personne{
 	
 
 	public function prepare_value($aPost){
-		$aValue['personne']=$aPost;		
-		unset($aValue['personne']['submit_inscription']);
-		unset($aValue['personne']['captcha_code']);
+		foreach($this->value_personne as $value){
+			$aValue['personne'][$value]=(isset($aPost[$value]))?$aPost[$value]:"";
+		}	
 		$aValue['personne']['date_naissance']=preg_replace("#^([0-9]{2})([0-9]{2})([0-9]{4})$#","$3/$2/$1",$aValue['personne']['date_naissance']);; 
 		$aValue['personne']['date_form']=date("Y-m-d H:i:s"); 
 		$aValue['personne']['cle_activation']=md5(time());
@@ -234,11 +246,8 @@ class personne{
 		$aValue['personne']['id_parrain']=$this->getIdParrain();
 		$aValue['personne']['RQ']=(!empty($aPost['RQ']))?$aPost['RQ']:"";
 		$aValue['action']=(!empty($aPost['id_action']))?$aPost['id_action']:array();
-		$aValue['competences']=(!empty($aPost['id_competences']))?$aPost['id_competences']:array();
+		$aValue['competences']=(!empty($aPost['id_competences']) && $aPost['id_competences']!="autre")?$aPost['id_competences']:array();
 		$aValue['dispo']=(!empty($aPost['id_dispo']))?$aPost['id_dispo']:array();
-		unset($aValue['personne']['id_action']);
-		unset($aValue['personne']['id_competences']);
-		unset($aValue['personne']['id_dispo']);
 		$this->aInfos=$aValue;
 		return $aValue;
 	}
@@ -367,7 +376,7 @@ class personne{
 		
 EOF;
 		
-		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "activation aide pour La Manif Pour Tous", EMAIL_MANIF, EMAIL_MANIF);
+		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "activation aide pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
 	}
 
 	public function activate($cle_activation){
@@ -382,7 +391,7 @@ EOF;
 				
 			} catch (Exception $e) {
 				$stmt->execute(array("date_activation"=>date("Y-m-d H:i:s"),"id_statut"=>$this->getIdStatut("ERROR_ACTIVATION"),"cle_activation"=>$cle_activation)) ;
-				lib::send_mail("erreur d'enregistrement cle=".$cle_activation, EMAIL_ADMIN, "erreur activation aide pour La Manif Pour Tous", EMAIL_MANIF, EMAIL_MANIF);
+				lib::send_mail("erreur d'enregistrement cle=".$cle_activation, EMAIL_ADMIN, "erreur activation aide pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
 			}
 			
 		}
@@ -408,7 +417,7 @@ EOF;
 	public function getInfosPersonne($cle_activation){
 		$stmt = $this->pdo->prepare(
 			"SELECT  GROUP_CONCAT(DISTINCT action SEPARATOR ';') as action,
-					GROUP_CONCAT(DISTINCT competence SEPARATOR ';') as competence,
+					CONCAT_WS(';',GROUP_CONCAT(DISTINCT competence SEPARATOR ';'),p.autre_competences) as competence,
 					GROUP_CONCAT(DISTINCT dispo SEPARATOR ';') as dispo,
 					t.valeur as temps,
 					e.valeur as equipe,

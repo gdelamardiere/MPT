@@ -135,7 +135,7 @@ class spreedsheet {
 		foreach($aColumns as $key=>$value){
 			if(!array_key_exists($value, $aRelation)){
 				$this->InsertRelationDbGd(array("name_gd"=>$value,"position_gd"=>$key));
-				lib::send_mail("nouveau champ GD : ".$value, EMAIL_ADMIN, "nouveau champ GD", EMAIL_MANIF, EMAIL_MANIF);
+				lib::send_mail("nouveau champ GD : ".$value, EMAIL_ADMIN, "nouveau champ GD", EMAIL_FROM, EMAIL_MANIF);
 			}
 			else if($key!=$aRelation[$value]["position_gd"]){
 				$this->UpdateRelationDbGd($value,$key);

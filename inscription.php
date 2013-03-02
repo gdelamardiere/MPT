@@ -43,7 +43,6 @@ if(!empty($_POST)){
 			<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 			<div class="introduction">Bonjour,
 				<p>Merci de vous &ecirc;tre inscrit comme b&eacute;n&eacute;vole pour la Manif Pour Tous.</p>
-				<p>Prenez bien soin de bien écrire votre adresse email. Si l&#39;envoi du mail d'activation ne fonctionne pas, pensez à la vérifier.</p>
 				<p>Pour tous renseignements, vous pouvez envoyer un mail à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
 			</div>
 		</div>
@@ -68,7 +67,7 @@ exit;
 		}
 		if(!empty($verif['nCorrect'])){
 			foreach($verif['nCorrect'] as $value){
-				${"erreur_".$value}="Attention cette valeur est incorecte";
+				${"erreur_".$value}="Attention cette valeur est incorrecte";
 			}
 		}
 		if (!$captcha) {
@@ -85,7 +84,7 @@ exit;
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"><html>
 <head>
 	<meta http-equiv=Content-Type content="text/html; charset=utf-8" /> 
-	<title>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</title>
+	<title>Incription des b&eacute;n&eacute;voles pour tracter et/ou aider &agrave; la Manif Pour Tous du 24 Mars 2013</title>
 	<link href='css/form.css' type='text/css' rel='stylesheet'>
 </head>
 <body>
@@ -96,7 +95,6 @@ exit;
 		<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 		<div class="introduction">Bonjour,
 			<p>Merci de vous inscrire pour la Manif Pour Tous du 24 Mars, nous avons besoin de vous.</p>
-			<p>Prenez bien soin de bien écrire votre adresse email. Si l&#39;envoi de formulaire ne fonctionne pas, pensez à la vérifier.</p>
 			<p>Pour tous renseignements, vous pouvez envoyer un mail à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
 		</div>
 
@@ -179,36 +177,6 @@ exit;
 				</p>
 			</div>
 
-			<h2>Information de la personne qui vous a contacté</h2>
-			<div class="champ">
-				<div class="input">
-					<label class="label-input" for="nom_parrain">Nom du parrain : <span class="red">*</span></label>
-					<input type="text" name="nom_parrain" value="<?php echo $nom_parrain;?>" id="nom_parrain" class="required-input">
-				</div>
-				<p class="erreur" id="erreur_nom_parrain" style="display:<?php echo ($erreur_nom_parrain=="")?"display:none":"";?>">
-					<?php echo $erreur_nom_parrain;?>
-				</p>
-			</div>
-			<div class="champ">
-				<div class="input">
-					<label class="label-input" for="prenom_parrain">Prénom du parrain : <span class="red">*</span></label>
-					<input type="text" name="prenom_parrain" value="<?php echo $prenom_parrain;?>" id="prenom_parrain" class="required-input">
-				</div>
-				<p class="erreur" id="erreur_prenom_parrain" style="display:<?php echo ($erreur_prenom_parrain=="")?"display:none":"";?>">
-					<?php echo $erreur_prenom_parrain;?>
-				</p>
-			</div>
-			<div class="champ">
-				<div class="input">
-					<label class="label-input" for="email_parrain">Email du parrain : <span class="red">*</span></label>
-					<input type="text" name="email_parrain" value="<?php echo $email_parrain;?>" id="email_parrain" class="required-input">
-				</div>
-				<p class="erreur" id="erreur_email_parrain" style="display:<?php echo ($erreur_email_parrain=="")?"display:none":"";?>">
-					<?php echo $erreur_email_parrain;?>
-				</p>
-			</div>
-
-
 
 			<h2>Que voulez-vous faire ?</h2>
 			<div class="champ">
@@ -230,6 +198,7 @@ exit;
 				<div class="champ">
 					<div class="radio">
 						<label class="label">Je voudrais être chef d&#39;équipe : <span class="red">*</span></label>
+						<p class="message">Il est obligatoire pour les chefs d'équipe d'être présent à la formation qui se déroulera un soir de la semaine précédant la manif.</p>
 						<ul>
 							<li>
 								<input type="radio" name="chef_equipe" value="oui" id="chef_equipe_Oui" class="required-radio"  <?php if($chef_equipe=='oui'){echo 'checked="checked"';}?>>
@@ -296,6 +265,7 @@ exit;
 					<div class="champ">
 						<div class="checkbox">
 							<label class="label">J&#39;ai les compétences suivantes :</label>
+						<p class="message">Dans "autre" vous pouvez préciser votre métier (Médecin urgentiste, DJ, sécurité, etc.)</p>
 							<ul>
 								<?php foreach($competences as $key=>$value){?>
 									<li>
@@ -303,12 +273,51 @@ exit;
 										<label class="label-checkbox" for="id_competences_<?php echo $key;?>"><?php echo utf8_encode($value);?></label>
 									</li>
 									<?php }?>
+									<li>
+									<label>
+										<input type="checkbox" name="id_competences[]" value="Autre" id="id_competences_autre" class="required-checbox">Autre:
+									</label>
+									<input type="text" name="entry.1543224897.other_option_response" value="" class="ss-q-other" id="entry_1543224897_other_option_response" dir="auto" aria-label="Other">
+									</li>
 								</ul>
 							</div>
 							<p class="erreur" id="erreur_id_competences" style="display:<?php echo ($erreur_id_competences=="")?"display:none":"";?>">
 								<?php echo $erreur_id_competences;?>
 							</p>
 						</div>	
+						
+			
+			<h2>Information de la personne qui vous a contacté</h2>
+			<div class="champ">
+				<div class="input">
+					<label class="label-input" for="nom_parrain">Nom du parrain : <span class="red">*</span></label>
+					<input type="text" name="nom_parrain" value="<?php echo $nom_parrain;?>" id="nom_parrain" class="required-input">
+				</div>
+				<p class="erreur" id="erreur_nom_parrain" style="display:<?php echo ($erreur_nom_parrain=="")?"display:none":"";?>">
+					<?php echo $erreur_nom_parrain;?>
+				</p>
+			</div>
+			<div class="champ">
+				<div class="input">
+					<label class="label-input" for="prenom_parrain">Prénom du parrain : <span class="red">*</span></label>
+					<input type="text" name="prenom_parrain" value="<?php echo $prenom_parrain;?>" id="prenom_parrain" class="required-input">
+				</div>
+				<p class="erreur" id="erreur_prenom_parrain" style="display:<?php echo ($erreur_prenom_parrain=="")?"display:none":"";?>">
+					<?php echo $erreur_prenom_parrain;?>
+				</p>
+			</div>
+			<div class="champ">
+				<div class="input">
+					<label class="label-input" for="email_parrain">Email du parrain : <span class="red">*</span></label>
+					<input type="text" name="email_parrain" value="<?php echo $email_parrain;?>" id="email_parrain" class="required-input">
+				</div>
+				<p class="erreur" id="erreur_email_parrain" style="display:<?php echo ($erreur_email_parrain=="")?"display:none":"";?>">
+					<?php echo $erreur_email_parrain;?>
+				</p>
+			</div>
+
+			
+						
 			<h2>Informations complémentaires</h2>
 			<div class="champ">
 				<div class="input">

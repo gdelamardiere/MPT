@@ -1,5 +1,5 @@
 <?php
-Zend_Loader::loadClass('lib',ROOT.'classes');
+require_once(ROOT.'classes/lib.php');
 class personne{
 	private $pdo;
 	public $aInfos;

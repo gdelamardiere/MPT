@@ -2,10 +2,10 @@
 session_start(); 
 header('Content-Type: text/html; charset=utf-8');
 require_once('conf.php'); 
-require_once 'Zend/Loader.php';
-Zend_Loader::loadClass('database',"classes");
-Zend_Loader::loadClass('personne',"classes");
-Zend_Loader::loadClass('lib',"classes");
+require_once(ROOT.'classes/database.php');
+require_once(ROOT.'classes/personne.php');
+require_once(ROOT.'classes/lib.php');
+
 $personne=new personne();
 $actions=$personne->getActions();
 $dispo=$personne->getDisponibilites();

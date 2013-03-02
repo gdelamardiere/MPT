@@ -68,9 +68,8 @@ class database extends PDO {
     }
 
     public function prepare($statement, $driver_options = array())
-    {var_dump($statement);
+    {
         $statement = $this->_tablePrefixSuffix($statement);
-        var_dump(parent::prepare($statement, $driver_options));
         return parent::prepare($statement, $driver_options);
     }
 

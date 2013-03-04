@@ -1,16 +1,25 @@
 @charset "UTF-8";
 
+#logo{
+ position:absolute;
+ width:311px; height:177px; 
+ top:1em; left:21em;
+ background:url(http://lamanifpourtous.fr/squelettes/interface/logo.png) no-repeat;
+  text-decoration:none; 
+  /*z-index:90;*/}
+
+
 body{
 	background-color:#E8EEF7;
 	color:black;
-	font:normal 13px arial,sans-serif;
+	font:normal 14px arial,sans-serif;
 	margin:0;
     padding: 0;
 }
 
 .form{
 	border: 1px solid #CCCCCC;
-    width: 45em;
+    width: 79em;
     background-color: #FFFFFF;
     margin: 0.5em auto 0;
     padding: 1em;
@@ -76,7 +85,7 @@ li{
 }
 .message{
 	font-style:italic;
-	font-size: 10px;
+	font-size: 12px;
 	color:#333333;
 	padding: 0px;
 	margin:0px;

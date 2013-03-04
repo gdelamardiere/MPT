@@ -86,12 +86,18 @@ exit;
 	<meta http-equiv=Content-Type content="text/html; charset=utf-8" /> 
 	<title>Incription des b&eacute;n&eacute;voles pour tracter et/ou aider &agrave; la Manif Pour Tous du 24 Mars 2013</title>
 	<link href='css/form.css' type='text/css' rel='stylesheet'>
+
+  <link rel="icon" href="http://lamanifpourtous.fr/squelettes/interface/favicon.ico" />
+    <!--link rel="stylesheet" href="squelettes/style.css" type="text/css" media="screen" /-->
+
 </head>
 <body>
 	<div class="form">
-		<p>
+	<img src="http://lamanifpourtous.fr/mediatheque/bannieresit24mars.jpg" alt="24 mars" />
+		<!--p>
+		<a id="logo" href="http://www.lamanifpourtous.fr" >&nbsp;</a>
 			<img src="<?php echo SITE_FRONT."entete_manif.png";?>"/>
-		</p>
+		</p-->
 		<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 		<div class="introduction">Bonjour,
 			<p>Merci de vous inscrire pour la Manif Pour Tous du 24 Mars, nous avons besoin de vous.</p>
@@ -293,7 +299,7 @@ exit;
 						</div>	
 						
 			
-			<h2>Information de la personne qui vous a contacté</h2>
+			<h2>J'ai reçu ce formulaire par :</h2>
 			<div class="champ">
 				<div class="input">
 					<label class="label-input" for="nom_parrain">Nom du parrain : <span class="red">*</span></label>

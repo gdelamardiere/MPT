@@ -9,7 +9,7 @@ if(empty($_GET['key'])){
 }
 
 $personne=new personne();
-$image=SITE_FRONT."bannieresit24mars.jpg";
+$image_entete=SITE_FRONT."bannieresit24mars.jpg";
 $verif=$personne->activate($_GET['key']);
 
 ?>
@@ -23,18 +23,17 @@ $verif=$personne->activate($_GET['key']);
 </head>
 <body>
 	<div class="form">
+		<img src="<?php echo $image_entete;?>"/>
+		<br><br><br>
 		<h1>Activation de votre mail</h1>
 		<div class="introduction">Bonjour,
 			<?php if($verif){?>
-			Votre compte a bien été activé, vous serez contacté prochainement par la manif pour tous <br/>
+			Votre compte a bien &eacute;t&eacute; activ&eacute;, vous serez contact&eacute; prochainement par la manif pour tous.<br/><br/><br/>
 			Encore merci
 			<?php } else{?>
 			Le lien d'activation n'est pas valide.<br/>
 			veuillez nous contacter à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a>
 			<?php }?>
-		</div>
-		<div class="image">
-			<img src="<?php echo $image;?>"/>
 		</div>
 	</div>
 </body>

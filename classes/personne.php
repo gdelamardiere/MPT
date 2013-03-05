@@ -119,7 +119,7 @@ class personne{
 	}
 
 	public function verif_date($value){
-		$regex="#^[0-9]{2}[0-9]{2}[0-9]{4}$#";
+		$regex="#^[0-9]{2}/[0-9]{2}/[0-9]{4}$#";
 		return $this->verif_regex($regex,$value);
 	}
 
@@ -146,7 +146,7 @@ class personne{
 		foreach($aId as $id){
 			if(!array_key_exists($id,$aVal)){
 				$ret=false;
-				break;
+			break;
 			}
 		}
 		return $ret;
@@ -362,21 +362,23 @@ class personne{
 	<head>
 		<meta http-equiv=Content-Type content="text/html; charset=utf-8" /> 
 	</head>
-	<body>
-		<div>
-		Bonjour $prenom $nom 
-		<p>Merci de vous etre inscrit.</p>
-		<a href="$lien">Activation:</a> 
-		</div>
-		<div class="image">
-		<img src="$image"/>
-		</div>
-	</body>
+<body>
+<div style="color:#000; background-color:#fff; font-family:times new roman, new york, times, serif;font-size:12pt">
+	<br>Bonjour $prenom $nom,<br>
+	<br>Vous venez juste de proposer votre aide &agrave; l'organisation de La Manif Pour Tous du 24 Mars.
+	<br>Afin de terminer votre inscription merci de suivre ce lien :<br><br><a href="$lien" target="_blank">$lien</a><br>
+	<br>Cette action permet de v&eacute;rifier que votre adresse email est bien valide<br>
+	<br>Pour nous contacter veuillez adresser un mail &agrave; <a ymailto="mailto:recrutement@lamanifpourtous.fr" href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a>.<br>
+	<br>Pour &ecirc;tre sur de recevoir les informations concernant la manif, pensez &agrave; ajouter recrutement@lamanifpourtous.fr &agrave; votre liste de contacts<br>
+	<br><br>Si vous recevez cet email sans vous &ecirc;tre inscrit, nous vous prions de bien vouloir le mentionner en adressant un mail &agrave; <a ymailto="mailto:recrutement@lamanifpourtous.fr" href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a>.<br>
+	<br><br>Merci et &agrave; bient&ocirc;t,<br><br>L'&eacute;quipe de La Manif Pour Tous<br><br>
+</div>
+</body>
 </html>
-		
+
 EOF;
 		
-		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "activation aide pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
+		lib::send_mail(utf8_decode($mail), $this->aInfos['personne']['email'], "Activation de votre inscription pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
 	}
 
 	public function activate($cle_activation){
@@ -391,7 +393,7 @@ EOF;
 				
 			} catch (Exception $e) {
 				$stmt->execute(array("date_activation"=>date("Y-m-d H:i:s"),"id_statut"=>$this->getIdStatut("ERROR_ACTIVATION"),"cle_activation"=>$cle_activation)) ;
-				lib::send_mail("erreur d'enregistrement cle=".$cle_activation, EMAIL_ADMIN, "erreur activation aide pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
+				lib::send_mail("Erreur d'enregistrement cle=".$cle_activation."   ".$e, EMAIL_ADMIN, "Erreur d'activation de votre inscription pour La Manif Pour Tous", EMAIL_FROM, EMAIL_MANIF);
 			}
 			
 		}

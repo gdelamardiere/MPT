@@ -43,6 +43,7 @@ if(!empty($_POST)){
 	</head>
 	<body>
 		<div class="form">
+	<img src="<?php echo $img_entete;?>" alt="24 mars" />
 			<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 			<div class="introduction">Bonjour,
 				<p>Merci de vous &ecirc;tre inscrit comme b&eacute;n&eacute;vole pour la Manif Pour Tous.</p>
@@ -151,7 +152,7 @@ exit;
 			<div class="champ">
 				<div class="input">
 					<label class="label-input" for="date_naissance">Date de naissance : <span class="red">*</span></label>
-					<p class="message">De la forme JJMMAAAA, Exemple : 15021984 pour le 15 Février 1984</p>
+					<p class="message">De la forme JJ/MM/AAAA, Exemple : 15/02/1984 pour le 15 Février 1984</p>
 					<input type="text" name="date_naissance" value="<?php echo $date_naissance;?>" id="date_naissance" class="required-input">
 				</div>
 				<p class="erreur" id="erreur_date_naissance" style="display:<?php echo ($erreur_date_naissance=="")?"display:none":"";?>">

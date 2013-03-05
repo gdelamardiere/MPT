@@ -6,6 +6,9 @@ require_once(ROOT.'classes/database.php');
 require_once(ROOT.'classes/personne.php');
 require_once(ROOT.'classes/lib.php');
 
+$img_entete=SITE_FRONT."bannieresit24mars.jpg";
+
+
 $personne=new personne();
 $actions=$personne->getActions();
 $dispo=$personne->getDisponibilites();
@@ -43,6 +46,7 @@ if(!empty($_POST)){
 			<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 			<div class="introduction">Bonjour,
 				<p>Merci de vous &ecirc;tre inscrit comme b&eacute;n&eacute;vole pour la Manif Pour Tous.</p>
+				<p>Vous allez recevoir un mail pour activer votre inscription. Merci de regarder dans vos spams si vous pensez ne pas l'avoir re&ccedil;u.</p>
 				<p>Pour tous renseignements, vous pouvez envoyer un mail à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
 			</div>
 		</div>
@@ -93,7 +97,7 @@ exit;
 </head>
 <body>
 	<div class="form">
-	<img src="http://lamanifpourtous.fr/mediatheque/bannieresit24mars.jpg" alt="24 mars" />
+	<img src="<?php echo $img_entete;?>" alt="24 mars" />
 		<!--p>
 		<a id="logo" href="http://www.lamanifpourtous.fr" >&nbsp;</a>
 			<img src="<?php echo SITE_FRONT."entete_manif.png";?>"/>

@@ -9,7 +9,7 @@ if(empty($_GET['key'])){
 }
 
 $personne=new personne();
-$image=SITE_FRONT."entete.jpg";
+$image=SITE_FRONT."bannieresit24mars.jpg";
 $verif=$personne->activate($_GET['key']);
 
 ?>
@@ -19,6 +19,7 @@ $verif=$personne->activate($_GET['key']);
 	<meta http-equiv=Content-Type content="text/html; charset=utf-8" /> 
 	<title>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</title>
 	<link href='css/form.css' type='text/css' rel='stylesheet'>
+  <link rel="icon" href="http://lamanifpourtous.fr/squelettes/interface/favicon.ico" />
 </head>
 <body>
 	<div class="form">

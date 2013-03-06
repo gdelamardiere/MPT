@@ -9,13 +9,13 @@ class personne{
 	private $aObligatedValue=array("nom"=>"verif_string" ,"prenom"=>"verif_string" ,
 		"tel_port"=>"verif_tel" ,"email"=>"verif_email" ,
 		"cp"=>"verif_cp" ,"date_naissance"=>"verif_date" ,
-		"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,"id_temps"=>"verif_temps",
+		"sexe"=>"verif_sexe" ,"id_action"=>"verif_action" ,
 		"chef_equipe"=>"verif_yn" ,
 		"nom_parrain"=>"verif_string" ,"prenom_parrain"=>"verif_string" ,
 		"email_parrain"=>"verif_email");
 	
 	private $aOtherValue=array("id_dispo"=>"verif_dispo" ,
-		"id_competences"=>"verif_competence"  ,
+		"id_competences"=>"verif_competence"  ,"id_temps"=>"verif_temps",
 		"RQ"=>"verif_string" ,"id_equipe"=>"verif_equipe",
 		"email_equipe"=>"verif_email","autre_competences"=>"verif_string");
 
@@ -369,7 +369,7 @@ class personne{
 	<br>Afin de terminer votre inscription merci de suivre ce lien :<br><br><a href="$lien" target="_blank">$lien</a><br>
 	<br>Cette action permet de v&eacute;rifier que votre adresse email est bien valide<br>
 	<br>Pour nous contacter veuillez adresser un mail &agrave; <a ymailto="mailto:recrutement@lamanifpourtous.fr" href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a>.<br>
-	<br>Pour &ecirc;tre sur de recevoir les informations concernant la manif, pensez &agrave; ajouter recrutement@lamanifpourtous.fr &agrave; votre liste de contacts<br>
+	<br>Pour &ecirc;tre sur de recevoir les informations concernant la manif, pensez &agrave; ajouter <a ymailto="mailto:recrutement@lamanifpourtous.fr" href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a> &agrave; votre liste de contacts<br>
 	<br><br>Si vous recevez cet email sans vous &ecirc;tre inscrit, nous vous prions de bien vouloir le mentionner en adressant un mail &agrave; <a ymailto="mailto:recrutement@lamanifpourtous.fr" href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a>.<br>
 	<br><br>Merci et &agrave; bient&ocirc;t,<br><br>L'&eacute;quipe de La Manif Pour Tous<br><br>
 </div>

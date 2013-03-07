@@ -103,10 +103,10 @@ exit;
 		<a id="logo" href="http://www.lamanifpourtous.fr" >&nbsp;</a>
 			<img src="<?php echo SITE_FRONT."entete_manif.png";?>"/>
 		</p-->
-		<h1>Incription des b&eacute;n&eacute;voles &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
+		<h1>Inscription des b&eacute;n&eacute;voles pour tracter et aider &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
 		<div class="introduction">Bonjour,
-			<p>Merci de vous inscrire pour la Manif Pour Tous du 24 Mars, nous avons besoin de vous.</p> 
-			<p>Attention ! Seul les personnes de plus de 16 ans peuvent s'inscrire.</p>
+			<p>Merci de vous inscrire pour la Manif Pour Tous du 24 Mars, nous avons besoin de vous.</p>
+			<p>Attention ! Seules les personnes de plus de 16 ans peuvent s'inscrire.</p>
 			<p>Pour tous renseignements, vous pouvez envoyer un mail à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
 		</div>
 

@@ -196,8 +196,8 @@ class personne{
 	}
 
 	public function getIdParrain(){
-		$stmt = $this->pdo->prepare("SELECT id_personne FROM `personnes`  WHERE nom LIKE :nom_parrain AND prenom LIKE :prenom_parrain AND email LIKE :email_parrain");
-		$stmt->execute(array("nom_parrain"=>$this->aInfos['personne']['nom_parrain'],"prenom_parrain"=>$this->aInfos['personne']['prenom_parrain'],"email_parrain"=>$this->aInfos['personne']['email_parrain'])) ;
+		$stmt = $this->pdo->prepare("SELECT id_personne FROM `personnes`  WHERE email LIKE :email_parrain");
+		$stmt->execute(array("email_parrain"=>$this->aInfos['personne']['email_parrain'])) ;
 		$ret=$stmt->fetch(PDO::FETCH_ASSOC);
 		return ($ret===false)?NULL:$ret['id_competences'];
 	}
@@ -239,7 +239,7 @@ class personne{
 		foreach($this->value_personne as $value){
 			$aValue['personne'][$value]=(isset($aPost[$value]))?$aPost[$value]:"";
 		}	
-		$aValue['personne']['date_naissance']=preg_replace("#^([0-9]{2})([0-9]{2})([0-9]{4})$#","$3/$2/$1",$aValue['personne']['date_naissance']);; 
+		$aValue['personne']['date_naissance']=preg_replace("#^([0-9]{2})/([0-9]{2})/([0-9]{4})$#","$3/$2/$1",$aValue['personne']['date_naissance']);
 		$aValue['personne']['date_form']=date("Y-m-d H:i:s"); 
 		$aValue['personne']['cle_activation']=md5(time());
 		$aValue['personne']['id_statut']=$this->getIdStatut("WAIT_ACTIVATION");

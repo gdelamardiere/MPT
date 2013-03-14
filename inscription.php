@@ -191,7 +191,7 @@ exit;
 				</p>
 			</div>
 
-			<div class="separat-hauteur"></div>
+			<div class="separateur-haut"></div>
 			<span class="button-default">Que voulez-vous faire ?</span>
 			<div class="separateur"></div>
 			<div class="champ">

@@ -103,17 +103,19 @@ exit;
 		<a id="logo" href="http://www.lamanifpourtous.fr" >&nbsp;</a>
 			<img src="<?php echo SITE_FRONT."entete_manif.png";?>"/>
 		</p-->
-		<h1>Inscription des b&eacute;n&eacute;voles pour tracter et aider &agrave; la Manif Pour Tous du 24 Mars 2013</h1>
-		<div class="introduction">Bonjour,
-			<p>Merci de vous inscrire pour la Manif Pour Tous du 24 Mars, nous avons besoin de vous.</p>
-			<p>Attention ! Seules les personnes de plus de 16 ans peuvent s'inscrire.</p>
-			<p>Pour tous renseignements, vous pouvez envoyer un mail à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
+		<h1 ><span class="rose">Merci de vous inscrire en tant que bénévole pour La Manif Pour Tous !</span><br/>
+		<span class="bleu">Nous avons besoin de vous !</h1>
+		<div class="introduction">
+			<p>Attention ! Seules les personnes de plus de 16 ans peuvent s'inscrire.<br/>
+			Pour tous renseignements, écrivez-nous à <a href="mailto:recrutement@lamanifpourtous.fr">recrutement@lamanifpourtous.fr</a></p>
 		</div>
 
-		<div class="red">* Required</div>
+		<div class="obligatoire">* Informations obligatoires</div>
 	
 		<form action="inscription.php" method="POST" id="form-inscription" target="_self" onsubmit="">
-			<h2>Information de base</h2>
+			<div class="separateur-haut"></div>
+			<span class="button-default">Information de base</span>
+			<div class="separateur"></div>
 			<div class="champ">
 				<div class="input">
 					<label class="label-input" for="nom">Nom : <span class="red">*</span></label>
@@ -189,8 +191,9 @@ exit;
 				</p>
 			</div>
 
-
-			<h2>Que voulez-vous faire ?</h2>
+			<div class="separat-hauteur"></div>
+			<span class="button-default">Que voulez-vous faire ?</span>
+			<div class="separateur"></div>
 			<div class="champ">
 				<div class="checkbox">
 					<label class="label">Je suis motivé pour : <span class="red">*</span></label>
@@ -305,7 +308,10 @@ exit;
 						</div>	
 						
 			
-			<h2>J'ai reçu ce formulaire par :</h2>
+			
+			<div class="separateur-haut"></div>
+			<span class="button-default">J'ai reçu ce formulaire par :</span>
+			<div class="separateur"></div>
 			<div class="champ">
 				<div class="input">
 					<label class="label-input" for="nom_parrain">Nom du parrain : <span class="red">*</span></label>
@@ -336,7 +342,10 @@ exit;
 
 			
 						
-			<h2>Informations complémentaires</h2>
+			
+			<div class="separateur-haut"></div>
+			<span class="button-default">Informations complémentaires</span>
+			<div class="separateur"></div>
 			<div class="champ">
 				<div class="input">
 					<label class="label-input" for="email_equipe">Email de la personne dont je souhaite rejoindre l'équipe :</label>

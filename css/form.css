@@ -26,9 +26,49 @@ body{
 }
 
 h1{
-	font-size: 1.8em;
+	font-size: 1.7em;
     padding: 0;
+    text-align: center;
 }
+.rose{
+	color:#e3004f;
+}
+
+.bleu{
+	color:#004494;
+}
+.obligatoire{
+	font-size: 1.3em;
+	color:#e3004f;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.introduction{
+	color: #444444;
+    font-size: 1.4em;
+}
+.introduction a,.introduction a:hover{
+	color:#000;
+	font-weight: bold;
+}
+
+.button-default {
+    background: none repeat scroll 0 0 #E3004F;
+    border: 1px solid #DDDDDD;
+    border-radius: 0.4em 0.4em 0.4em 0.4em;
+    color: #FFFFFF;
+    font-size: 23px;
+    line-height: 1em;
+    padding: 0.5em;
+}
+
+.separateur{
+	 margin-bottom: 30px;
+}
+.separateur-haut{
+	 margin-bottom: 50px;
+}
+
 h2{
 	background-color: #EEEEEE;
     margin: 2em -0.4em 0;
